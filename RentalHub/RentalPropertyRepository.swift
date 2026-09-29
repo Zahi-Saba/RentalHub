@@ -6,3 +6,7 @@
 //
 
 import Foundation
+
+protocol RentalPropertyRepository {
+    func save(_ property: RentalProperty) throws
+}
