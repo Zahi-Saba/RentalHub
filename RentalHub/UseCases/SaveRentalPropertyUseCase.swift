@@ -22,11 +22,11 @@ struct SaveRentalPropertyUseCase {
 
     func execute(address: String, weeklyRent: Double) throws -> RentalProperty {
 
-        guard !address.isEmpty else {
+        if address.isEmpty {
             throw SaveRentalPropertyError.missingAddress
         }
 
-        guard weeklyRent > 0 else {
+        if weeklyRent <= 0 {
             throw SaveRentalPropertyError.invalidWeeklyRent
         }
 
