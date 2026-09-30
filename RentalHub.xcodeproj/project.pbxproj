@@ -21,15 +21,76 @@
 		60AB83A3306B7EC900EEA96D /* RentalHubTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RentalHubTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		60AB8398306B7EC700EEA96D /* RentalHub */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = RentalHub;
-			sourceTree = "<group>";
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		60AB8467306D48FB00EEA96D /* Exceptions for "RentalHub" folder in "RentalHub" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				ContentView.swift,
+				Models/InspectionObservation.swift,
+				Models/RentalInspection.swift,
+				Models/RentalProerty.swift,
+				RentalHubApp.swift,
+				Repositories/CoreDataRentalPropertyRepository.swift,
+				Repositories/RentalPropertyRepository.swift,
+				UseCases/RecordInspectionObservationUseCase.swift,
+				UseCases/SaveRentalPropertyUseCase.swift,
+				UseCases/ScheduleInspectionUseCase.swift,
+				ViewModels/RentalHubViewModel.swift,
+				Views/Assets.xcassets,
+				Views/RentalPropertyListView.swift,
+			);
+			target = 60AB8395306B7EC700EEA96D /* RentalHub */;
 		};
+		60AB8468306D48FB00EEA96D /* Exceptions for "RentalHub" folder in "RentalHubTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				ContentView.swift,
+				Models/InspectionObservation.swift,
+				Models/RentalInspection.swift,
+				Models/RentalProerty.swift,
+				RentalHubApp.swift,
+				Repositories/CoreDataRentalPropertyRepository.swift,
+				Repositories/RentalPropertyRepository.swift,
+				UseCases/RecordInspectionObservationUseCase.swift,
+				UseCases/SaveRentalPropertyUseCase.swift,
+				UseCases/ScheduleInspectionUseCase.swift,
+				ViewModels/RentalHubViewModel.swift,
+				Views/Assets.xcassets,
+				Views/RentalPropertyListView.swift,
+			);
+			target = 60AB83A2306B7EC900EEA96D /* RentalHubTests */;
+		};
+		60AB847B306D49CC00EEA96D /* Exceptions for "Presistence" folder in "RentalHub" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				PersistenceController.swift,
+				RentalHubModel.xcdatamodeld,
+			);
+			target = 60AB8395306B7EC700EEA96D /* RentalHub */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
 		60AB83A6306B7EC900EEA96D /* RentalHubTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = RentalHubTests;
+			sourceTree = "<group>";
+		};
+		60AB843A306D48F100EEA96D /* Presistence */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				60AB847B306D49CC00EEA96D /* Exceptions for "Presistence" folder in "RentalHub" target */,
+			);
+			path = Presistence;
+			sourceTree = "<group>";
+		};
+		60AB845A306D48FA00EEA96D /* RentalHub */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				60AB8467306D48FB00EEA96D /* Exceptions for "RentalHub" folder in "RentalHub" target */,
+				60AB8468306D48FB00EEA96D /* Exceptions for "RentalHub" folder in "RentalHubTests" target */,
+			);
+			path = RentalHub;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -55,7 +116,8 @@
 		60AB838D306B7EC700EEA96D = {
 			isa = PBXGroup;
 			children = (
-				60AB8398306B7EC700EEA96D /* RentalHub */,
+				60AB845A306D48FA00EEA96D /* RentalHub */,
+				60AB843A306D48F100EEA96D /* Presistence */,
 				60AB83A6306B7EC900EEA96D /* RentalHubTests */,
 				60AB8397306B7EC700EEA96D /* Products */,
 			);
@@ -85,9 +147,6 @@
 			);
 			dependencies = (
 			);
-			fileSystemSynchronizedGroups = (
-				60AB8398306B7EC700EEA96D /* RentalHub */,
-			);
 			name = RentalHub;
 			packageProductDependencies = (
 			);
@@ -110,6 +169,8 @@
 			);
 			fileSystemSynchronizedGroups = (
 				60AB83A6306B7EC900EEA96D /* RentalHubTests */,
+				60AB843A306D48F100EEA96D /* Presistence */,
+				60AB845A306D48FA00EEA96D /* RentalHub */,
 			);
 			name = RentalHubTests;
 			packageProductDependencies = (

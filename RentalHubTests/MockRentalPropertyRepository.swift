@@ -25,4 +25,7 @@ class MockRentalPropertyRepository: RentalPropertyRepository {
     func save(_ observation: InspectionObservation) throws {
         savedObservations.append(observation)
     }
+    func fetchRentalProperties() throws -> [RentalProperty] {
+        return savedProperties
+    }
 }
