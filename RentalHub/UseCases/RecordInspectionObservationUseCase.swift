@@ -13,6 +13,12 @@ enum RecordInspectionObservationError: Error {
 //An observation must have a note.
 struct RecordInspectionObservationUseCase {
 
+    private let repository: RentalPropertyRepository
+
+    init(repository: RentalPropertyRepository) {
+        self.repository = repository
+    }
+
     func execute(
         inspectionID: UUID,
         criterion: InspectionCriterion,
@@ -30,6 +36,8 @@ struct RecordInspectionObservationUseCase {
             status: status,
             notes: notes
         )
+
+        try repository.save(observation)
 
         return observation
     }

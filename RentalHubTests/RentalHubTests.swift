@@ -71,7 +71,11 @@ struct RentalHubTests {
     @Test
     func rejectsInspectionWithSameStartAndEndTime() {
         
-        let useCase = ScheduleInspectionUseCase()
+        let repository = MockRentalPropertyRepository()
+        
+        let useCase = ScheduleInspectionUseCase(
+            repository: repository
+        )
         
         let propertyID = UUID()
         let inspectionTime = Date()
@@ -83,12 +87,18 @@ struct RentalHubTests {
                 endTime: inspectionTime
             )
         }
+        
+        #expect(repository.savedInspections.count == 0)
     }
     @Test
     func rejectsObservationWithMissingNotes() {
-
-        let useCase = RecordInspectionObservationUseCase()
-
+        
+        let repository = MockRentalPropertyRepository()
+        
+        let useCase = RecordInspectionObservationUseCase(
+            repository: repository
+        )
+        
         #expect(throws: RecordInspectionObservationError.self) {
             try useCase.execute(
                 inspectionID: UUID(),
@@ -97,7 +107,30 @@ struct RentalHubTests {
                 notes: ""
             )
         }
+        
+        #expect(repository.savedObservations.count == 0)
     }
-        }
+    
+    //happy path
+    @Test
+    func savesValidInspectionObservation() throws {
+
+        let repository = MockRentalPropertyRepository()
+
+        let useCase = RecordInspectionObservationUseCase(
+            repository: repository
+        )
+
+        let observation = try useCase.execute(
+            inspectionID: UUID(),
+            criterion: .storage,
+            status: .meetsNeeds,
+            notes: "Plenty of wardrobe space"
+        )
+
+        #expect(observation.notes == "Plenty of wardrobe space")
+        #expect(repository.savedObservations.count == 1)
+    }
+}
 
     

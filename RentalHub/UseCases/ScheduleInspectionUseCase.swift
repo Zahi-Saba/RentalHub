@@ -13,6 +13,12 @@ enum ScheduleInspectionError: Error {
 
 struct ScheduleInspectionUseCase {
 
+    private let repository: RentalPropertyRepository
+
+    init(repository: RentalPropertyRepository) {
+        self.repository = repository
+    }
+
     func execute(
         rentalPropertyID: UUID,
         startTime: Date,
@@ -28,6 +34,8 @@ struct ScheduleInspectionUseCase {
             startTime: startTime,
             endTime: endTime
         )
+
+        try repository.save(inspection)
 
         return inspection
     }

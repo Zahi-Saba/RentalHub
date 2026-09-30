@@ -21,23 +21,6 @@
 		60AB83A3306B7EC900EEA96D /* RentalHubTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RentalHubTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		60AB83DF306BE41500EEA96D /* Exceptions for "RentalHubTests" folder in "RentalHub" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				MockRentalPropertyRepository.swift,
-			);
-			target = 60AB8395306B7EC700EEA96D /* RentalHub */;
-		};
-		60AB83E0306BE41500EEA96D /* Exceptions for "RentalHubTests" folder in "RentalHubTests" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				MockRentalPropertyRepository.swift,
-			);
-			target = 60AB83A2306B7EC900EEA96D /* RentalHubTests */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		60AB8398306B7EC700EEA96D /* RentalHub */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
@@ -46,10 +29,6 @@
 		};
 		60AB83A6306B7EC900EEA96D /* RentalHubTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				60AB83DF306BE41500EEA96D /* Exceptions for "RentalHubTests" folder in "RentalHub" target */,
-				60AB83E0306BE41500EEA96D /* Exceptions for "RentalHubTests" folder in "RentalHubTests" target */,
-			);
 			path = RentalHubTests;
 			sourceTree = "<group>";
 		};

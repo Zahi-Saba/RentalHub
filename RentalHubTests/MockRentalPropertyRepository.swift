@@ -6,12 +6,23 @@
 //
 
 import Foundation
+@testable import RentalHub
 
 class MockRentalPropertyRepository: RentalPropertyRepository {
 
     var savedProperties: [RentalProperty] = []
+    var savedInspections: [RentalInspection] = []
+    var savedObservations: [InspectionObservation] = []
 
     func save(_ property: RentalProperty) throws {
         savedProperties.append(property)
+    }
+
+    func save(_ inspection: RentalInspection) throws {
+        savedInspections.append(inspection)
+    }
+
+    func save(_ observation: InspectionObservation) throws {
+        savedObservations.append(observation)
     }
 }
