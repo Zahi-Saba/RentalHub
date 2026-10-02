@@ -36,8 +36,11 @@
 				UseCases/SaveRentalPropertyUseCase.swift,
 				UseCases/ScheduleInspectionUseCase.swift,
 				ViewModels/RentalHubViewModel.swift,
+				Views/AddRentalPropertyView.swift,
 				Views/Assets.xcassets,
+				Views/RentalPropertyDetailView.swift,
 				Views/RentalPropertyListView.swift,
+				Views/ScheduleInspectionView.swift,
 			);
 			target = 60AB8395306B7EC700EEA96D /* RentalHub */;
 		};
@@ -55,8 +58,11 @@
 				UseCases/SaveRentalPropertyUseCase.swift,
 				UseCases/ScheduleInspectionUseCase.swift,
 				ViewModels/RentalHubViewModel.swift,
+				Views/AddRentalPropertyView.swift,
 				Views/Assets.xcassets,
+				Views/RentalPropertyDetailView.swift,
 				Views/RentalPropertyListView.swift,
+				Views/ScheduleInspectionView.swift,
 			);
 			target = 60AB83A2306B7EC900EEA96D /* RentalHubTests */;
 		};

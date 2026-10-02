@@ -5,7 +5,6 @@
 //  Created by Zahi Saba on 30/9/2026.
 //
 
-import Foundation
 import SwiftUI
 
 struct RentalPropertyListView: View {
@@ -18,6 +17,15 @@ struct RentalPropertyListView: View {
 
             VStack {
 
+                NavigationLink(
+                    destination: AddRentalPropertyView(
+                        viewModel: viewModel
+                    )
+                ) {
+                    Text("Add Rental Property")
+                }
+                .padding()
+
                 if viewModel.rentalProperties.isEmpty {
 
                     Text("No rental properties saved yet.")
@@ -26,16 +34,27 @@ struct RentalPropertyListView: View {
 
                     List(viewModel.rentalProperties) { property in
 
-                        VStack(alignment: .leading) {
+                        NavigationLink(
+                            destination: RentalPropertyDetailView(
+                                viewModel: viewModel,
+                                property: property
+                            )
+                        ) {
 
-                            Text(property.address)
+                            VStack(alignment: .leading) {
 
-                            Text("Weekly rent: $\(property.weeklyRent)")
+                                Text(property.address)
+
+                                Text("Weekly rent: $\(property.weeklyRent)")
+                            }
                         }
                     }
                 }
             }
             .navigationTitle("Rental Shortlist")
+            .onAppear {
+                viewModel.loadRentalProperties()
+            }
         }
     }
 }

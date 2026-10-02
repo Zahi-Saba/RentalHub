@@ -15,11 +15,15 @@ class RentalHubViewModel: ObservableObject {
     @Published var observations: [InspectionObservation] = []
     @Published var errorMessage: String = ""
 
+    private let repository: RentalPropertyRepository
+
     private let saveRentalPropertyUseCase: SaveRentalPropertyUseCase
     private let scheduleInspectionUseCase: ScheduleInspectionUseCase
     private let recordInspectionObservationUseCase: RecordInspectionObservationUseCase
 
     init(repository: RentalPropertyRepository) {
+
+        self.repository = repository
 
         self.saveRentalPropertyUseCase = SaveRentalPropertyUseCase(
             repository: repository
@@ -32,6 +36,19 @@ class RentalHubViewModel: ObservableObject {
         self.recordInspectionObservationUseCase = RecordInspectionObservationUseCase(
             repository: repository
         )
+    }
+
+    func loadRentalProperties() {
+
+        do {
+
+            rentalProperties = try repository.fetchRentalProperties()
+            errorMessage = ""
+
+        } catch {
+
+            errorMessage = "Saved rental properties could not be loaded."
+        }
     }
 
     func addRentalProperty(
