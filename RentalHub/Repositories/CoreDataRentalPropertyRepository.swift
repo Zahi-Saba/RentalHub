@@ -107,5 +107,122 @@ class CoreDataRentalPropertyRepository: RentalPropertyRepository {
 
         return properties
     }
-    
+    func fetchUpcomingInspections() throws -> [RentalInspection] {
+
+        let request = RentalInspectionEntity.fetchRequest()
+
+        request.predicate = NSPredicate(
+            format: "endTime >= %@",
+            Date() as NSDate
+        )
+        
+        request.sortDescriptors = [
+            NSSortDescriptor(
+                key: "startTime",
+                ascending: true
+            )
+        ]
+
+        let entities = try context.fetch(request)
+
+        var inspections: [RentalInspection] = []
+
+        for entity in entities {
+
+            if let id = entity.id,
+               let startTime = entity.startTime,
+               let endTime = entity.endTime,
+               let propertyID = entity.rentalProperty?.id {
+
+                let inspection = RentalInspection(
+                    id: id,
+                    rentalPropertyID: propertyID,
+                    startTime: startTime,
+                    endTime: endTime
+                )
+
+                inspections.append(inspection)
+            }
+        }
+
+        return inspections
+    }
+    func fetchInspections(
+        for rentalPropertyID: UUID
+    ) throws -> [RentalInspection] {
+
+        let request = RentalInspectionEntity.fetchRequest()
+
+        request.predicate = NSPredicate(
+            format: "rentalProperty.id == %@",
+            rentalPropertyID as CVarArg
+        )
+
+        let entities = try context.fetch(request)
+
+        var inspections: [RentalInspection] = []
+
+        for entity in entities {
+
+            if let id = entity.id,
+               let startTime = entity.startTime,
+               let endTime = entity.endTime,
+               let propertyID = entity.rentalProperty?.id {
+
+                let inspection = RentalInspection(
+                    id: id,
+                    rentalPropertyID: propertyID,
+                    startTime: startTime,
+                    endTime: endTime
+                )
+
+                inspections.append(inspection)
+            }
+        }
+
+        return inspections
+    }
+    func fetchObservations(
+        for inspectionID: UUID
+    ) throws -> [InspectionObservation] {
+
+        let request = InspectionObservationEntity.fetchRequest()
+
+        request.predicate = NSPredicate(
+            format: "inspection.id == %@",
+            inspectionID as CVarArg
+        )
+
+        let entities = try context.fetch(request)
+
+        var observations: [InspectionObservation] = []
+
+        for entity in entities {
+
+            if let id = entity.id,
+               let inspectionID = entity.inspection?.id,
+               let criterionValue = entity.criterion,
+               let statusValue = entity.status,
+               let notes = entity.notes,
+               let criterion = InspectionCriterion(
+                    rawValue: criterionValue
+               ),
+               let status = ObservationStatus(
+                    rawValue: statusValue
+               ) {
+
+                let observation = InspectionObservation(
+                    id: id,
+                    inspectionID: inspectionID,
+                    criterion: criterion,
+                    status: status,
+                    notes: notes
+                )
+
+                observations.append(observation)
+            }
+        }
+
+        return observations
+    }
 }

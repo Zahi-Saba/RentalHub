@@ -53,8 +53,7 @@ class RentalHubViewModel: ObservableObject {
 
     func addRentalProperty(
         address: String,
-        weeklyRent: Double
-    ) {
+        weeklyRent: Double) {
 
         do {
 
@@ -83,8 +82,7 @@ class RentalHubViewModel: ObservableObject {
     func scheduleInspection(
         rentalPropertyID: UUID,
         startTime: Date,
-        endTime: Date
-    ) {
+        endTime: Date) {
 
         do {
 
@@ -111,8 +109,7 @@ class RentalHubViewModel: ObservableObject {
         inspectionID: UUID,
         criterion: InspectionCriterion,
         status: ObservationStatus,
-        notes: String
-    ) {
+        notes: String) {
 
         do {
 
@@ -134,5 +131,45 @@ class RentalHubViewModel: ObservableObject {
 
             errorMessage = "The observation could not be saved. Please try again."
         }
+    }
+    
+    func loadUpcomingInspections() {
+
+        do {
+
+            inspections = try repository.fetchUpcomingInspections()
+            errorMessage = ""
+
+        } catch {
+
+            errorMessage = "Upcoming inspections could not be loaded."
+        }
+    }
+
+    func loadObservations(for inspectionID: UUID) {
+
+        do {
+
+            observations = try repository.fetchObservations(
+                for: inspectionID
+            )
+
+            errorMessage = ""
+
+        } catch {
+
+            errorMessage = "Inspection observations could not be loaded."
+        }
+    }
+    func propertyAddress(for rentalPropertyID: UUID) -> String {
+
+        for property in rentalProperties {
+
+            if property.id == rentalPropertyID {
+                return property.address
+            }
+        }
+
+        return "Unknown Property"
     }
 }

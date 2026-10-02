@@ -50,6 +50,14 @@ struct RentalPropertyListView: View {
                         }
                     }
                 }
+                NavigationLink(
+                    destination: InspectionPlannerView(
+                        viewModel: viewModel
+                    )
+                ) {
+                    Text("View Inspection Planner")
+                }
+                .padding()
             }
             .navigationTitle("Rental Shortlist")
             .onAppear {
