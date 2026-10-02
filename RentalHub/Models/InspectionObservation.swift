@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum InspectionCriterion: String {
+enum InspectionCriterion: String, CaseIterable {
     case noise
     case daylight
     case storage
@@ -15,7 +15,7 @@ enum InspectionCriterion: String {
     case transport
 }
 
-enum ObservationStatus: String {
+enum ObservationStatus: String, CaseIterable {
     case notChecked
     case meetsNeeds
     case doesNotMeetNeeds

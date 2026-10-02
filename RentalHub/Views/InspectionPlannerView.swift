@@ -24,26 +24,41 @@ struct InspectionPlannerView: View {
 
                 List(viewModel.inspections) { inspection in
 
-                    VStack(alignment: .leading, spacing: 6) {
+                    NavigationLink(
+                        destination: InspectionChecklistView(
+                            viewModel: viewModel,
+                            inspection: inspection
+                        )
+                    ) {
 
-                        Text(viewModel.propertyAddress(for: inspection.rentalPropertyID))
-                        .font(.headline)
+                        VStack(alignment: .leading, spacing: 6) {
 
-                        Text(inspection.startTime,style: .date)
-
-                        HStack {
+                            Text(
+                                viewModel.propertyAddress(
+                                    for: inspection.rentalPropertyID
+                                )
+                            )
+                            .font(.headline)
 
                             Text(
                                 inspection.startTime,
-                                style: .time
+                                style: .date
                             )
 
-                            Text("-")
+                            HStack {
 
-                            Text(
-                                inspection.endTime,
-                                style: .time
-                            )
+                                Text(
+                                    inspection.startTime,
+                                    style: .time
+                                )
+
+                                Text("-")
+
+                                Text(
+                                    inspection.endTime,
+                                    style: .time
+                                )
+                            }
                         }
                     }
                 }
