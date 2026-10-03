@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import WidgetKit
 
 class RentalHubViewModel: ObservableObject {
 
@@ -33,135 +34,69 @@ class RentalHubViewModel: ObservableObject {
             repository: repository
         )
 
-        self.recordInspectionObservationUseCase = RecordInspectionObservationUseCase(
-            repository: repository
-        )
+        self.recordInspectionObservationUseCase =
+            RecordInspectionObservationUseCase(
+                repository: repository
+            )
     }
 
     func loadRentalProperties() {
 
         do {
 
-            rentalProperties = try repository.fetchRentalProperties()
+            rentalProperties =
+                try repository.fetchRentalProperties()
+
             errorMessage = ""
 
         } catch {
 
-            errorMessage = "Saved rental properties could not be loaded."
+            errorMessage =
+                "Saved rental properties could not be loaded."
         }
     }
 
-    func addRentalProperty(
-        address: String,
-        weeklyRent: Double) {
-
-        do {
-
-            let property = try saveRentalPropertyUseCase.execute(
-                address: address,
-                weeklyRent: weeklyRent
-            )
-
-            rentalProperties.append(property)
-            errorMessage = ""
-
-        } catch SaveRentalPropertyError.missingAddress {
-
-            errorMessage = "Please enter the property address."
-
-        } catch SaveRentalPropertyError.invalidWeeklyRent {
-
-            errorMessage = "Weekly rent must be greater than $0."
-
-        } catch {
-
-            errorMessage = "The property could not be saved. Please try again."
-        }
-    }
-
-    func scheduleInspection(
-        rentalPropertyID: UUID,
-        startTime: Date,
-        endTime: Date) {
-
-        do {
-
-            let inspection = try scheduleInspectionUseCase.execute(
-                rentalPropertyID: rentalPropertyID,
-                startTime: startTime,
-                endTime: endTime
-            )
-
-            inspections.append(inspection)
-            errorMessage = ""
-
-        } catch ScheduleInspectionError.invalidTime {
-
-            errorMessage = "The inspection end time must be after the start time."
-
-        } catch {
-
-            errorMessage = "The inspection could not be scheduled. Please try again."
-        }
-    }
-
-    func recordObservation(
-        inspectionID: UUID,
-        criterion: InspectionCriterion,
-        status: ObservationStatus,
-        notes: String) {
-
-        do {
-
-            let observation = try recordInspectionObservationUseCase.execute(
-                inspectionID: inspectionID,
-                criterion: criterion,
-                status: status,
-                notes: notes
-            )
-
-            observations.append(observation)
-            errorMessage = ""
-
-        } catch RecordInspectionObservationError.missingNotes {
-
-            errorMessage = "Please add a note about what you observed."
-
-        } catch {
-
-            errorMessage = "The observation could not be saved. Please try again."
-        }
-    }
-    
     func loadUpcomingInspections() {
 
         do {
 
-            inspections = try repository.fetchUpcomingInspections()
+            inspections =
+                try repository.fetchUpcomingInspections()
+
+            updateWidget()
+
             errorMessage = ""
 
         } catch {
 
-            errorMessage = "Upcoming inspections could not be loaded."
+            errorMessage =
+                "Upcoming inspections could not be loaded."
         }
     }
 
-    func loadObservations(for inspectionID: UUID) {
+    func loadObservations(
+        for inspectionID: UUID
+    ) {
 
         do {
 
-            observations = try repository.fetchObservations(
-                for: inspectionID
-            )
+            observations =
+                try repository.fetchObservations(
+                    for: inspectionID
+                )
 
             errorMessage = ""
 
         } catch {
 
-            errorMessage = "Inspection observations could not be loaded."
+            errorMessage =
+                "Inspection observations could not be loaded."
         }
     }
-    func propertyAddress(for rentalPropertyID: UUID) -> String {
+
+    func propertyAddress(
+        for rentalPropertyID: UUID
+    ) -> String {
 
         for property in rentalProperties {
 
@@ -171,5 +106,128 @@ class RentalHubViewModel: ObservableObject {
         }
 
         return "Unknown Property"
+    }
+
+    func addRentalProperty(
+        address: String,
+        weeklyRent: Double
+    ) {
+
+        do {
+
+            let property =
+                try saveRentalPropertyUseCase.execute(
+                    address: address,
+                    weeklyRent: weeklyRent
+                )
+
+            rentalProperties.append(property)
+
+            errorMessage = ""
+
+        } catch SaveRentalPropertyError.missingAddress {
+
+            errorMessage =
+                "Please enter the property address."
+
+        } catch SaveRentalPropertyError.invalidWeeklyRent {
+
+            errorMessage =
+                "Weekly rent must be greater than $0."
+
+        } catch {
+
+            errorMessage =
+                "The property could not be saved. Please try again."
+        }
+    }
+
+    func scheduleInspection(
+        rentalPropertyID: UUID,
+        startTime: Date,
+        endTime: Date
+    ) {
+
+        do {
+
+            let inspection =
+                try scheduleInspectionUseCase.execute(
+                    rentalPropertyID: rentalPropertyID,
+                    startTime: startTime,
+                    endTime: endTime
+                )
+
+            inspections.append(inspection)
+
+            loadUpcomingInspections()
+
+            errorMessage = ""
+
+        } catch ScheduleInspectionError.invalidTime {
+
+            errorMessage =
+                "The inspection end time must be after the start time."
+
+        } catch {
+
+            errorMessage =
+                "The inspection could not be scheduled. Please try again."
+        }
+    }
+
+    func recordObservation(
+        inspectionID: UUID,
+        criterion: InspectionCriterion,
+        status: ObservationStatus,
+        notes: String
+    ) {
+
+        do {
+
+            let observation =
+                try recordInspectionObservationUseCase.execute(
+                    inspectionID: inspectionID,
+                    criterion: criterion,
+                    status: status,
+                    notes: notes
+                )
+
+            observations.append(observation)
+
+            errorMessage = ""
+
+        } catch RecordInspectionObservationError.missingNotes {
+
+            errorMessage =
+                "Please add a note about what you observed."
+
+        } catch {
+
+            errorMessage =
+                "The observation could not be saved. Please try again."
+        }
+    }
+
+    private func updateWidget() {
+
+        if let nextInspection = inspections.first {
+
+            let address = propertyAddress(
+                for: nextInspection.rentalPropertyID
+            )
+
+            SharedWidgetData.saveNextInspection(
+                address: address,
+                startTime: nextInspection.startTime
+            )
+
+        } else {
+
+            SharedWidgetData.clearNextInspection()
+        }
+
+        WidgetCenter.shared.reloadTimelines(
+            ofKind: SharedWidgetData.widgetKind
+        )
     }
 }

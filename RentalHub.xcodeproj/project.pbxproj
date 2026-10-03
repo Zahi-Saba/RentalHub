@@ -6,7 +6,20 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		606FCDAF30711E0200C16A97 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 606FCDAE30711E0200C16A97 /* WidgetKit.framework */; };
+		606FCDB130711E0200C16A97 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 606FCDB030711E0200C16A97 /* SwiftUI.framework */; };
+		606FCDBC30711E0400C16A97 /* RentalHubWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 606FCDAC30711E0200C16A97 /* RentalHubWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
+		606FCDBA30711E0400C16A97 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 60AB838E306B7EC700EEA96D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 606FCDAB30711E0200C16A97;
+			remoteInfo = RentalHubWidgetExtension;
+		};
 		60AB83A4306B7EC900EEA96D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 60AB838E306B7EC700EEA96D /* Project object */;
@@ -16,12 +29,44 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		606FCDBD30711E0400C16A97 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				606FCDBC30711E0400C16A97 /* RentalHubWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		606FCDAC30711E0200C16A97 /* RentalHubWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = RentalHubWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		606FCDAE30711E0200C16A97 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		606FCDB030711E0200C16A97 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		606FCDC3307120D400C16A97 /* RentalHubWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RentalHubWidgetExtension.entitlements; sourceTree = "<group>"; };
 		60AB8396306B7EC700EEA96D /* RentalHub.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RentalHub.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		60AB83A3306B7EC900EEA96D /* RentalHubTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RentalHubTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		606FCDC130711E0400C16A97 /* Exceptions for "RentalHubWidget" folder in "RentalHubWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 606FCDAB30711E0200C16A97 /* RentalHubWidgetExtension */;
+		};
+		606FCDDA3071259300C16A97 /* Exceptions for "RentalHub" folder in "RentalHubWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Shared/SharedWidgetData.swift,
+			);
+			target = 606FCDAB30711E0200C16A97 /* RentalHubWidgetExtension */;
+		};
 		60AB8467306D48FB00EEA96D /* Exceptions for "RentalHub" folder in "RentalHub" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -29,9 +74,11 @@
 				Models/InspectionObservation.swift,
 				Models/RentalInspection.swift,
 				Models/RentalProerty.swift,
+				Presistence/PersistenceController.swift,
 				RentalHubApp.swift,
 				Repositories/CoreDataRentalPropertyRepository.swift,
 				Repositories/RentalPropertyRepository.swift,
+				Shared/SharedWidgetData.swift,
 				UseCases/RecordInspectionObservationUseCase.swift,
 				UseCases/SaveRentalPropertyUseCase.swift,
 				UseCases/ScheduleInspectionUseCase.swift,
@@ -53,6 +100,7 @@
 				Models/InspectionObservation.swift,
 				Models/RentalInspection.swift,
 				Models/RentalProerty.swift,
+				Presistence/RentalHubModel.xcdatamodeld,
 				RentalHubApp.swift,
 				Repositories/CoreDataRentalPropertyRepository.swift,
 				Repositories/RentalPropertyRepository.swift,
@@ -70,35 +118,47 @@
 			);
 			target = 60AB83A2306B7EC900EEA96D /* RentalHubTests */;
 		};
-		60AB847B306D49CC00EEA96D /* Exceptions for "Presistence" folder in "RentalHub" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				PersistenceController.swift,
-				RentalHubModel.xcdatamodeld,
-			);
-			target = 60AB8395306B7EC700EEA96D /* RentalHub */;
-		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
+/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+		606FCDCF307124F300C16A97 /* Exceptions for "RentalHub" folder in "Compile Sources" phase from "RentalHub" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = 60AB8392306B7EC700EEA96D /* Sources */;
+			membershipExceptions = (
+				Presistence/RentalHubModel.xcdatamodeld,
+			);
+		};
+		606FCDD0307124F300C16A97 /* Exceptions for "RentalHub" folder in "Compile Sources" phase from "RentalHubTests" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = 60AB839F306B7EC900EEA96D /* Sources */;
+			membershipExceptions = (
+				Presistence/RentalHubModel.xcdatamodeld,
+			);
+		};
+/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		606FCDB230711E0200C16A97 /* RentalHubWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				606FCDC130711E0400C16A97 /* Exceptions for "RentalHubWidget" folder in "RentalHubWidgetExtension" target */,
+			);
+			path = RentalHubWidget;
+			sourceTree = "<group>";
+		};
 		60AB83A6306B7EC900EEA96D /* RentalHubTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = RentalHubTests;
-			sourceTree = "<group>";
-		};
-		60AB843A306D48F100EEA96D /* Presistence */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				60AB847B306D49CC00EEA96D /* Exceptions for "Presistence" folder in "RentalHub" target */,
-			);
-			path = Presistence;
 			sourceTree = "<group>";
 		};
 		60AB845A306D48FA00EEA96D /* RentalHub */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				60AB8467306D48FB00EEA96D /* Exceptions for "RentalHub" folder in "RentalHub" target */,
+				606FCDCF307124F300C16A97 /* Exceptions for "RentalHub" folder in "Compile Sources" phase from "RentalHub" target */,
 				60AB8468306D48FB00EEA96D /* Exceptions for "RentalHub" folder in "RentalHubTests" target */,
+				606FCDD0307124F300C16A97 /* Exceptions for "RentalHub" folder in "Compile Sources" phase from "RentalHubTests" target */,
+				606FCDDA3071259300C16A97 /* Exceptions for "RentalHub" folder in "RentalHubWidgetExtension" target */,
 			);
 			path = RentalHub;
 			sourceTree = "<group>";
@@ -106,6 +166,15 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		606FCDA930711E0200C16A97 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				606FCDB130711E0200C16A97 /* SwiftUI.framework in Frameworks */,
+				606FCDAF30711E0200C16A97 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		60AB8393306B7EC700EEA96D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -123,12 +192,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		606FCDAD30711E0200C16A97 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				606FCDAE30711E0200C16A97 /* WidgetKit.framework */,
+				606FCDB030711E0200C16A97 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		60AB838D306B7EC700EEA96D = {
 			isa = PBXGroup;
 			children = (
+				606FCDC3307120D400C16A97 /* RentalHubWidgetExtension.entitlements */,
 				60AB845A306D48FA00EEA96D /* RentalHub */,
-				60AB843A306D48F100EEA96D /* Presistence */,
 				60AB83A6306B7EC900EEA96D /* RentalHubTests */,
+				606FCDB230711E0200C16A97 /* RentalHubWidget */,
+				606FCDAD30711E0200C16A97 /* Frameworks */,
 				60AB8397306B7EC700EEA96D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -138,6 +218,7 @@
 			children = (
 				60AB8396306B7EC700EEA96D /* RentalHub.app */,
 				60AB83A3306B7EC900EEA96D /* RentalHubTests.xctest */,
+				606FCDAC30711E0200C16A97 /* RentalHubWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -145,6 +226,28 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		606FCDAB30711E0200C16A97 /* RentalHubWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 606FCDC030711E0400C16A97 /* Build configuration list for PBXNativeTarget "RentalHubWidgetExtension" */;
+			buildPhases = (
+				606FCDA830711E0200C16A97 /* Sources */,
+				606FCDA930711E0200C16A97 /* Frameworks */,
+				606FCDAA30711E0200C16A97 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				606FCDB230711E0200C16A97 /* RentalHubWidget */,
+			);
+			name = RentalHubWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = RentalHubWidgetExtension;
+			productReference = 606FCDAC30711E0200C16A97 /* RentalHubWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		60AB8395306B7EC700EEA96D /* RentalHub */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 60AB83B7306B7EC900EEA96D /* Build configuration list for PBXNativeTarget "RentalHub" */;
@@ -152,10 +255,12 @@
 				60AB8392306B7EC700EEA96D /* Sources */,
 				60AB8393306B7EC700EEA96D /* Frameworks */,
 				60AB8394306B7EC700EEA96D /* Resources */,
+				606FCDBD30711E0400C16A97 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				606FCDBB30711E0400C16A97 /* PBXTargetDependency */,
 			);
 			name = RentalHub;
 			packageProductDependencies = (
@@ -179,7 +284,6 @@
 			);
 			fileSystemSynchronizedGroups = (
 				60AB83A6306B7EC900EEA96D /* RentalHubTests */,
-				60AB843A306D48F100EEA96D /* Presistence */,
 				60AB845A306D48FA00EEA96D /* RentalHub */,
 			);
 			name = RentalHubTests;
@@ -199,6 +303,9 @@
 				LastSwiftUpdateCheck = 2660;
 				LastUpgradeCheck = 2660;
 				TargetAttributes = {
+					606FCDAB30711E0200C16A97 = {
+						CreatedOnToolsVersion = 26.6;
+					};
 					60AB8395306B7EC700EEA96D = {
 						CreatedOnToolsVersion = 26.6;
 					};
@@ -224,11 +331,19 @@
 			targets = (
 				60AB8395306B7EC700EEA96D /* RentalHub */,
 				60AB83A2306B7EC900EEA96D /* RentalHubTests */,
+				606FCDAB30711E0200C16A97 /* RentalHubWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		606FCDAA30711E0200C16A97 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		60AB8394306B7EC700EEA96D /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -246,6 +361,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		606FCDA830711E0200C16A97 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		60AB8392306B7EC700EEA96D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -263,6 +385,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		606FCDBB30711E0400C16A97 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 606FCDAB30711E0200C16A97 /* RentalHubWidgetExtension */;
+			targetProxy = 606FCDBA30711E0400C16A97 /* PBXContainerItemProxy */;
+		};
 		60AB83A5306B7EC900EEA96D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 60AB8395306B7EC700EEA96D /* RentalHub */;
@@ -271,6 +398,68 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		606FCDBE30711E0400C16A97 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = RentalHubWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3H2WU8RMV4;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = RentalHubWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = RentalHubWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ZahiOrg.RentalHub.RentalHubWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		606FCDBF30711E0400C16A97 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = RentalHubWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3H2WU8RMV4;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = RentalHubWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = RentalHubWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ZahiOrg.RentalHub.RentalHubWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		60AB83B5306B7EC900EEA96D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -395,8 +584,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = RentalHub/RentalHub.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3H2WU8RMV4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -426,8 +617,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = RentalHub/RentalHub.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3H2WU8RMV4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -497,6 +690,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		606FCDC030711E0400C16A97 /* Build configuration list for PBXNativeTarget "RentalHubWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				606FCDBE30711E0400C16A97 /* Debug */,
+				606FCDBF30711E0400C16A97 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		60AB8391306B7EC700EEA96D /* Build configuration list for PBXProject "RentalHub" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
