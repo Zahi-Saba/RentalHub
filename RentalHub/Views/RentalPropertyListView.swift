@@ -26,6 +26,13 @@ struct RentalPropertyListView: View {
                 }
                 .padding()
 
+                NavigationLink(
+                    destination: SharedPropertyPreviewView()
+                ) {
+                    Text("View Shared Properties")
+                }
+                .padding()
+
                 if viewModel.rentalProperties.isEmpty {
 
                     Text("No rental properties saved yet.")
@@ -45,11 +52,14 @@ struct RentalPropertyListView: View {
 
                                 Text(property.address)
 
-                                Text("Weekly rent: $\(property.weeklyRent)")
+                                Text(
+                                    "Weekly rent: $\(property.weeklyRent)"
+                                )
                             }
                         }
                     }
                 }
+
                 NavigationLink(
                     destination: InspectionPlannerView(
                         viewModel: viewModel

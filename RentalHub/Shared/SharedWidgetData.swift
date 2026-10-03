@@ -38,9 +38,13 @@ struct SharedWidgetData {
             suiteName: appGroup
         )
 
-        return defaults?.string(
+        if let address = defaults?.string(
             forKey: "nextInspectionAddress"
-        ) ?? "No upcoming inspection"
+        ) {
+            return address
+        }
+
+        return "No upcoming inspection"
     }
 
     static func loadStartTime() -> Date? {
@@ -49,9 +53,16 @@ struct SharedWidgetData {
             suiteName: appGroup
         )
 
-        return defaults?.object(
+        if let savedValue = defaults?.object(
             forKey: "nextInspectionStartTime"
-        ) as? Date
+        ) {
+
+            if let date = savedValue as? Date {
+                return date
+            }
+        }
+
+        return nil
     }
 
     static func clearNextInspection() {
