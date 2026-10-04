@@ -25,7 +25,7 @@ struct RentalPropertyDetailView: View {
             Text("Weekly Rent")
                 .font(.headline)
 
-            Text("$\(property.weeklyRent) per week")
+            Text("$\(property.weeklyRent, specifier: "%.0f") per week")
 
             NavigationLink(
                 destination: ScheduleInspectionView(

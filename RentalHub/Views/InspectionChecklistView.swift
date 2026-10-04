@@ -68,6 +68,7 @@ struct InspectionChecklistView: View {
                 if !viewModel.errorMessage.isEmpty {
 
                     Text(viewModel.errorMessage)
+                        .foregroundColor(.red)
                 }
 
                 Button("Save Observation") {

@@ -21,7 +21,16 @@ class MockRentalPropertyRepository: RentalPropertyRepository {
     func save(_ inspection: RentalInspection) throws {
         savedInspections.append(inspection)
     }
-
+    
+    func delete(_ property: RentalProperty) throws {
+        if let index = savedProperties.firstIndex(
+            where: { $0.id == property.id }
+        ) {
+            savedProperties.remove(
+                at: index
+            )
+        }
+    }
     func save(_ observation: InspectionObservation) throws {
         savedObservations.append(observation)
     }

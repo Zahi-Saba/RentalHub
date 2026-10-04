@@ -110,7 +110,73 @@ struct RentalHubTests {
         
         #expect(repository.savedObservations.count == 0)
     }
-    
+    @Test
+    func rejectsDuplicateInspectionCriterion() throws {
+
+        let repository =
+            MockRentalPropertyRepository()
+
+        let useCase =
+            RecordInspectionObservationUseCase(
+                repository: repository
+            )
+
+        let inspectionID = UUID()
+
+        _ = try useCase.execute(
+            inspectionID: inspectionID,
+            criterion: .noise,
+            status: .meetsNeeds,
+            notes: "Noise level is acceptable."
+        )
+
+        var duplicateWasRejected = false
+
+        do {
+
+            _ = try useCase.execute(
+                inspectionID: inspectionID,
+                criterion: .noise,
+                status: .doesNotMeetNeeds,
+                notes: "Traffic is loud."
+            )
+
+        } catch RecordInspectionObservationError
+            .criterionAlreadyRecorded {
+
+            duplicateWasRejected = true
+        }
+
+        #expect(
+            duplicateWasRejected == true
+        )
+    }
+    @Test
+    func deletesSavedRentalProperty() throws {
+
+        let repository =
+            MockRentalPropertyRepository()
+
+        let useCase =
+            DeleteRentalPropertyUseCase(
+                repository: repository
+            )
+
+        let property = RentalProperty(
+            address: "10 George Street",
+            weeklyRent: 600
+        )
+
+        try repository.save(property)
+
+        try useCase.execute(
+            property: property
+        )
+
+        #expect(
+            repository.savedProperties.isEmpty
+        )
+    }
     //happy path
     @Test
     func savesValidInspectionObservation() throws {

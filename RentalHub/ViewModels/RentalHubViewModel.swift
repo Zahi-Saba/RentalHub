@@ -15,10 +15,12 @@ class RentalHubViewModel: ObservableObject {
     @Published var inspections: [RentalInspection] = []
     @Published var observations: [InspectionObservation] = []
     @Published var errorMessage: String = ""
+    @Published var inspectionHistory: [RentalInspection] = []
 
     private let repository: RentalPropertyRepository
 
     private let saveRentalPropertyUseCase: SaveRentalPropertyUseCase
+    private let deleteRentalPropertyUseCase:DeleteRentalPropertyUseCase
     private let scheduleInspectionUseCase: ScheduleInspectionUseCase
     private let recordInspectionObservationUseCase: RecordInspectionObservationUseCase
 
@@ -36,6 +38,10 @@ class RentalHubViewModel: ObservableObject {
 
         self.recordInspectionObservationUseCase =
             RecordInspectionObservationUseCase(
+                repository: repository
+            )
+        deleteRentalPropertyUseCase =
+            DeleteRentalPropertyUseCase(
                 repository: repository
             )
     }
@@ -174,7 +180,71 @@ class RentalHubViewModel: ObservableObject {
                 "The inspection could not be scheduled. Please try again."
         }
     }
+    
+    func loadInspectionHistory() {
 
+        do {
+
+            let properties = try repository.fetchRentalProperties()
+
+            var pastInspections: [RentalInspection] = []
+
+            for property in properties {
+
+                let propertyInspections =
+                    try repository.fetchInspections(
+                        for: property.id
+                    )
+
+                for inspection in propertyInspections {
+
+                    if inspection.endTime < Date() {
+
+                        pastInspections.append(
+                            inspection
+                        )
+                    }
+                }
+            }
+
+            inspectionHistory = pastInspections.sorted {
+                $0.startTime > $1.startTime
+            }
+
+            errorMessage = ""
+
+        } catch {
+
+            errorMessage =
+                "Inspection history could not be loaded."
+        }
+    }
+    
+    func deleteRentalProperty(_ property: RentalProperty) {
+
+        do {
+
+            try deleteRentalPropertyUseCase.execute(
+                property: property
+            )
+
+            loadRentalProperties()
+            loadUpcomingInspections()
+
+            errorMessage = ""
+
+        } catch DeleteRentalPropertyError
+            .rentalPropertyNotFound {
+
+            errorMessage =
+                "This rental property could not be found."
+
+        } catch {
+
+            errorMessage =
+                "The rental property could not be deleted."
+        }
+    }
     func recordObservation(
         inspectionID: UUID,
         criterion: InspectionCriterion,
@@ -201,7 +271,14 @@ class RentalHubViewModel: ObservableObject {
             errorMessage =
                 "Please add a note about what you observed."
 
-        } catch {
+        }
+        catch RecordInspectionObservationError.criterionAlreadyRecorded {
+            
+            errorMessage =
+            "This inspection item has already been recorded."
+        }
+        
+        catch {
 
             errorMessage =
                 "The observation could not be saved. Please try again."

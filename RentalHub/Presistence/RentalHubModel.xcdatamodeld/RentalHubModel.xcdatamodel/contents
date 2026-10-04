@@ -11,13 +11,13 @@
         <attribute name="endTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="startTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <relationship name="observations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InspectionObservationEntity" inverseName="inspection" inverseEntity="InspectionObservationEntity"/>
+        <relationship name="observations" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="InspectionObservationEntity" inverseName="inspection" inverseEntity="InspectionObservationEntity"/>
         <relationship name="rentalProperty" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RentalPropertyEntity" inverseName="inspections" inverseEntity="RentalPropertyEntity"/>
     </entity>
     <entity name="RentalPropertyEntity" representedClassName=".RentalPropertyEntity" syncable="YES" codeGenerationType="class">
         <attribute name="address" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="weeklyRent" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <relationship name="inspections" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RentalInspectionEntity" inverseName="rentalProperty" inverseEntity="RentalInspectionEntity"/>
+        <relationship name="inspections" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="RentalInspectionEntity" inverseName="rentalProperty" inverseEntity="RentalInspectionEntity"/>
     </entity>
 </model>

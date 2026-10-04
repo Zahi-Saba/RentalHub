@@ -9,15 +9,12 @@ import Foundation
 
 enum RecordInspectionObservationError: Error {
     case missingNotes
+    case criterionAlreadyRecorded
 }
-//An observation must have a note.
+// an observation must have a note 
 struct RecordInspectionObservationUseCase {
 
-    private let repository: RentalPropertyRepository
-
-    init(repository: RentalPropertyRepository) {
-        self.repository = repository
-    }
+    let repository: RentalPropertyRepository
 
     func execute(
         inspectionID: UUID,
@@ -30,6 +27,20 @@ struct RecordInspectionObservationUseCase {
             throw RecordInspectionObservationError.missingNotes
         }
 
+        let savedObservations =
+            try repository.fetchObservations(
+                for: inspectionID
+            )
+
+        for observation in savedObservations {
+
+            if observation.criterion == criterion {
+
+                throw RecordInspectionObservationError
+                    .criterionAlreadyRecorded
+            }
+        }
+
         let observation = InspectionObservation(
             inspectionID: inspectionID,
             criterion: criterion,
@@ -37,7 +48,9 @@ struct RecordInspectionObservationUseCase {
             notes: notes
         )
 
-        try repository.save(observation)
+        try repository.save(
+            observation
+        )
 
         return observation
     }

@@ -31,6 +31,32 @@ class CoreDataRentalPropertyRepository: RentalPropertyRepository {
 
         try context.save()
     }
+    
+    func delete(_ property: RentalProperty) throws {
+
+        let request =
+            RentalPropertyEntity.fetchRequest()
+
+        request.predicate = NSPredicate(
+            format: "id == %@",
+            property.id as CVarArg
+        )
+
+        let properties =
+            try context.fetch(request)
+
+        if properties.isEmpty {
+
+            throw CoreDataRentalPropertyRepositoryError
+                .rentalPropertyNotFound
+        }
+
+        context.delete(
+            properties[0]
+        )
+
+        try context.save()
+    }
 
     func save(_ inspection: RentalInspection) throws {
 

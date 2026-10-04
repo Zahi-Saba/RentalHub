@@ -38,22 +38,37 @@ struct RentalPropertyListView: View {
                     Text("No rental properties saved yet.")
 
                 } else {
+                    
+                    List {
+                        ForEach(
+                            viewModel.rentalProperties) {property in
 
-                    List(viewModel.rentalProperties) { property in
+                            NavigationLink(
+                                destination: RentalPropertyDetailView(
+                                    viewModel: viewModel,
+                                    property: property
+                                )
+                            ) {
 
-                        NavigationLink(
-                            destination: RentalPropertyDetailView(
-                                viewModel: viewModel,
-                                property: property
-                            )
-                        ) {
+                                VStack(
+                                    alignment: .leading
+                                ) {
 
-                            VStack(alignment: .leading) {
+                                    Text(property.address)
 
-                                Text(property.address)
+                                    Text("Weekly rent: $\(property.weeklyRent, specifier: "%.0f")")
+                                }
+                            }
+                        }
+                        .onDelete { indexSet in
 
-                                Text(
-                                    "Weekly rent: $\(property.weeklyRent)"
+                            for index in indexSet {
+
+                                let property =
+                                    viewModel.rentalProperties[index]
+
+                                viewModel.deleteRentalProperty(
+                                    property
                                 )
                             }
                         }

@@ -13,8 +13,10 @@ struct ScheduleInspectionView: View {
 
     let property: RentalProperty
 
-    @State private var startTime: Date = Date()
-    @State private var endTime: Date = Date()
+    @State private var startTime = Date()
+    @State private var endTime = Date()
+
+    @State private var showConfirmation = false
 
     var body: some View {
 
@@ -34,8 +36,8 @@ struct ScheduleInspectionView: View {
             )
 
             if !viewModel.errorMessage.isEmpty {
-
                 Text(viewModel.errorMessage)
+                    .foregroundColor(.red)
             }
 
             Button("Schedule Inspection") {
@@ -45,11 +47,28 @@ struct ScheduleInspectionView: View {
                     startTime: startTime,
                     endTime: endTime
                 )
+
+                if viewModel.errorMessage.isEmpty {
+
+                    showConfirmation = true
+                }
             }
 
             Spacer()
         }
         .padding()
         .navigationTitle("Schedule Inspection")
+
+        .alert(
+            "Inspection Scheduled",
+            isPresented: $showConfirmation
+        ) {
+            Button("OK") {
+            }
+        } message: {
+            Text(
+                "The inspection was scheduled successfully."
+            )
+        }
     }
 }

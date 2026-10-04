@@ -96,7 +96,6 @@
 		60AB8467306D48FB00EEA96D /* Exceptions for "RentalHub" folder in "RentalHub" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				ContentView.swift,
 				Models/InspectionObservation.swift,
 				Models/RentalInspection.swift,
 				Models/RentalProerty.swift,
@@ -107,6 +106,7 @@
 				Repositories/RentalPropertyRepository.swift,
 				Shared/SharedRentalLinkData.swift,
 				Shared/SharedWidgetData.swift,
+				UseCases/DeleteRentalPropertyUseCase.swift,
 				UseCases/RecordInspectionObservationUseCase.swift,
 				UseCases/SaveRentalPropertyUseCase.swift,
 				UseCases/ScheduleInspectionUseCase.swift,
@@ -114,6 +114,7 @@
 				Views/AddRentalPropertyView.swift,
 				Views/Assets.xcassets,
 				Views/InspectionChecklistView.swift,
+				Views/InspectionHistoryView.swift,
 				Views/InspectionPlannerView.swift,
 				Views/RentalPropertyDetailView.swift,
 				Views/RentalPropertyListView.swift,
@@ -125,13 +126,13 @@
 		60AB8468306D48FB00EEA96D /* Exceptions for "RentalHub" folder in "RentalHubTests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				ContentView.swift,
 				Models/InspectionObservation.swift,
 				Models/RentalInspection.swift,
 				Models/RentalProerty.swift,
 				RentalHubApp.swift,
 				Repositories/CoreDataRentalPropertyRepository.swift,
 				Repositories/RentalPropertyRepository.swift,
+				UseCases/DeleteRentalPropertyUseCase.swift,
 				UseCases/RecordInspectionObservationUseCase.swift,
 				UseCases/SaveRentalPropertyUseCase.swift,
 				UseCases/ScheduleInspectionUseCase.swift,
@@ -139,6 +140,7 @@
 				Views/AddRentalPropertyView.swift,
 				Views/Assets.xcassets,
 				Views/InspectionChecklistView.swift,
+				Views/InspectionHistoryView.swift,
 				Views/InspectionPlannerView.swift,
 				Views/RentalPropertyDetailView.swift,
 				Views/RentalPropertyListView.swift,

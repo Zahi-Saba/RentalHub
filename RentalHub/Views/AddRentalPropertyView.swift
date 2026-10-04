@@ -14,6 +14,7 @@ struct AddRentalPropertyView: View {
     @State private var address: String = ""
     @State private var weeklyRent: String = ""
     @State private var inputError: String = ""
+    @State private var showConfirmation = false
 
     var body: some View {
 
@@ -34,10 +35,12 @@ struct AddRentalPropertyView: View {
 
             if !inputError.isEmpty {
                 Text(inputError)
+                    .foregroundColor(.red)
             }
 
             if !viewModel.errorMessage.isEmpty {
                 Text(viewModel.errorMessage)
+                    .foregroundColor(.red)
             }
 
             Button("Save Rental Property") {
@@ -47,12 +50,14 @@ struct AddRentalPropertyView: View {
                     viewModel.addRentalProperty(
                         address: address,
                         weeklyRent: rent
+                        
                     )
 
                     if viewModel.errorMessage.isEmpty {
                         address = ""
                         weeklyRent = ""
                         inputError = ""
+                        showConfirmation = true
                     }
 
                 } else {
@@ -65,5 +70,16 @@ struct AddRentalPropertyView: View {
         }
         .padding()
         .navigationTitle("Add Rental Property")
-    }
-}
+        .alert(
+                    "Rental Property Added",
+                    isPresented: $showConfirmation
+                ) {
+                    Button("OK") {
+                    }
+                } message: {
+                    Text(
+                        "The rental property was saved successfully."
+                    )
+                }
+            }
+        }

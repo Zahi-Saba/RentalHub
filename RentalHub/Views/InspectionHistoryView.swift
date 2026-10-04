@@ -1,14 +1,13 @@
 //
-//  InspectionPlannerView.swift
+//  InspectionHistoryView.swift
 //  RentalHub
 //
-//  Created by Zahi Saba on 2/10/2026.
+//  Created by Zahi Saba on 4/10/2026.
 //
 
-import Foundation
 import SwiftUI
 
-struct InspectionPlannerView: View {
+struct InspectionHistoryView: View {
 
     @ObservedObject var viewModel: RentalHubViewModel
 
@@ -16,13 +15,15 @@ struct InspectionPlannerView: View {
 
         VStack {
 
-            if viewModel.inspections.isEmpty {
+            if viewModel.inspectionHistory.isEmpty {
 
-                Text("No upcoming inspections scheduled.")
+                Text("No past inspections.")
 
             } else {
 
-                List(viewModel.inspections) { inspection in
+                List(
+                    viewModel.inspectionHistory
+                ) { inspection in
 
                     NavigationLink(
                         destination: InspectionChecklistView(
@@ -31,7 +32,10 @@ struct InspectionPlannerView: View {
                         )
                     ) {
 
-                        VStack(alignment: .leading, spacing: 6) {
+                        VStack(
+                            alignment: .leading,
+                            spacing: 6
+                        ) {
 
                             Text(
                                 viewModel.propertyAddress(
@@ -63,21 +67,12 @@ struct InspectionPlannerView: View {
                     }
                 }
             }
-
-            NavigationLink(
-                destination: InspectionHistoryView(
-                    viewModel: viewModel
-                )
-            ) {
-                Text("View Inspection History")
-            }
-            .padding()
         }
-        .navigationTitle("Inspection Planner")
+        .navigationTitle("Inspection History")
         .onAppear {
 
             viewModel.loadRentalProperties()
-            viewModel.loadUpcomingInspections()
+            viewModel.loadInspectionHistory()
         }
     }
 }
