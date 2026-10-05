@@ -50,6 +50,36 @@ struct SharedRentalLinkData {
 
         return []
     }
+    
+    static func removeLink(_ link: String) {
+
+        let defaults = UserDefaults(
+            suiteName: appGroup
+        )
+
+        var links: [String] = []
+
+        if let savedLinks = defaults?.stringArray(
+            forKey: "sharedRentalLinks"
+        ) {
+            links = savedLinks
+        }
+
+        if let index = links.firstIndex(
+            of: link
+        ) {
+            links.remove(
+                at: index
+            )
+        }
+
+        defaults?.set(
+            links,
+            forKey: "sharedRentalLinks"
+        )
+    }
+
+
 
     static func clearLinks() {
 

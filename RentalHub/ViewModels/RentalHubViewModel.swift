@@ -16,7 +16,8 @@ class RentalHubViewModel: ObservableObject {
     @Published var observations: [InspectionObservation] = []
     @Published var errorMessage: String = ""
     @Published var inspectionHistory: [RentalInspection] = []
-
+    @Published var latestPropertyInspection: RentalInspection?
+    @Published var latestPropertyObservations: [InspectionObservation] = []
     private let repository: RentalPropertyRepository
 
     private let saveRentalPropertyUseCase: SaveRentalPropertyUseCase
@@ -178,6 +179,59 @@ class RentalHubViewModel: ObservableObject {
 
             errorMessage =
                 "The inspection could not be scheduled. Please try again."
+        }
+    }
+    func loadLatestInspectionNotes(
+        for rentalPropertyID: UUID
+    ) {
+
+        latestPropertyInspection = nil
+        latestPropertyObservations = []
+
+        do {
+
+            let propertyInspections =
+                try repository.fetchInspections(
+                    for: rentalPropertyID
+                )
+
+            var selectedInspection: RentalInspection?
+            var selectedObservations: [InspectionObservation] = []
+
+            for inspection in propertyInspections {
+
+                let savedObservations =
+                    try repository.fetchObservations(
+                        for: inspection.id
+                    )
+
+                if !savedObservations.isEmpty {
+
+                    if let currentInspection = selectedInspection {
+
+                        if inspection.startTime > currentInspection.startTime {
+
+                            selectedInspection = inspection
+                            selectedObservations = savedObservations
+                        }
+
+                    } else {
+
+                        selectedInspection = inspection
+                        selectedObservations = savedObservations
+                    }
+                }
+            }
+
+            latestPropertyInspection = selectedInspection
+            latestPropertyObservations = selectedObservations
+
+            errorMessage = ""
+
+        } catch {
+
+            errorMessage =
+                "Inspection notes could not be loaded."
         }
     }
     

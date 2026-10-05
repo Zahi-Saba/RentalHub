@@ -32,7 +32,13 @@ struct SharedPropertyPreviewView: View {
                     ) { link in
 
                         SharedPropertyCard(
-                            link: link
+                            link: link,
+                            onRemove: {
+
+                                removeSharedLink(
+                                    link
+                                )
+                            }
                         )
                     }
                 }
@@ -46,11 +52,24 @@ struct SharedPropertyPreviewView: View {
                 SharedRentalLinkData.loadLinks()
         }
     }
+
+    private func removeSharedLink(
+        _ link: String
+    ) {
+
+        SharedRentalLinkData.removeLink(
+            link
+        )
+
+        sharedLinks =
+            SharedRentalLinkData.loadLinks()
+    }
 }
 
 struct SharedPropertyCard: View {
 
     let link: String
+    let onRemove: () -> Void
 
     @State private var metadata: LPLinkMetadata?
 
@@ -77,8 +96,15 @@ struct SharedPropertyCard: View {
                     "Loading property..."
                 )
             }
+
+            Button("Remove") {
+
+                onRemove()
+            }
+            .foregroundColor(.red)
         }
         .onAppear {
+
             loadPreview()
         }
     }
