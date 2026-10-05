@@ -15,140 +15,164 @@ struct RentalPropertyDetailView: View {
 
     var body: some View {
 
-        ScrollView {
+        ZStack {
 
-            VStack(alignment: .leading, spacing: 20) {
+            RentalHubTheme.background
+                .ignoresSafeArea()
 
-                Text("Property Address")
-                    .font(.headline)
+            ScrollView {
 
-                Text(property.address)
-
-                Text("Weekly Rent")
-                    .font(.headline)
-
-                Text(
-                    "$\(property.weeklyRent, specifier: "%.0f") per week"
-                )
-
-                NavigationLink(
-                    destination: ScheduleInspectionView(
-                        viewModel: viewModel,
-                        property: property
-                    )
+                VStack(
+                    alignment: .leading,
+                    spacing: 20
                 ) {
-                    Text("Schedule Inspection")
-                }
 
-                Divider()
+                    VStack(
+                        alignment: .leading,
+                        spacing: 12
+                    ) {
 
-                Text("Latest Inspection Notes")
-                    .font(.headline)
+                        HStack {
 
-                if let inspection =
-                    viewModel.latestPropertyInspection {
-
-                    HStack {
-
-                        Text(
-                            inspection.startTime,
-                            style: .date
-                        )
-
-                        Text("-")
-
-                        Text(
-                            inspection.startTime,
-                            style: .time
-                        )
-                    }
-                    ForEach(
-                        viewModel.latestPropertyObservations
-                    ) { observation in
-
-                        VStack(
-                            alignment: .leading,
-                            spacing: 5
-                        ) {
-
-                            Text(
-                                criterionName(
-                                    observation.criterion
-                                )
+                            Image(
+                                systemName: "house.fill"
                             )
-                            .font(.headline)
-
-                            Text(
-                                statusName(
-                                    observation.status
-                                )
+                            .font(.title2)
+                            .foregroundColor(
+                                RentalHubTheme.accent
                             )
 
-                            Text(observation.notes)
+                            Text("Property")
+                                .font(.headline)
+                                .foregroundColor(
+                                    RentalHubTheme.secondaryText
+                                )
                         }
-                        .padding()
+
+                        Text(property.address)
+                            .font(.title2)
+                            .bold()
+                            .foregroundColor(
+                                RentalHubTheme.mainText
+                            )
+
+                        Text(
+                            "$\(property.weeklyRent, specifier: "%.0f") per week"
+                        )
+                        .font(.headline)
+                        .foregroundColor(
+                            RentalHubTheme.secondaryText
+                        )
+                    }
+                    .padding()
+                    .frame(
+                        maxWidth: .infinity,
+                        alignment: .leading
+                    )
+                    .background(
+                        RentalHubTheme.card
+                    )
+                    .cornerRadius(15)
+
+                    NavigationLink(
+                        destination: ScheduleInspectionView(
+                            viewModel: viewModel,
+                            property: property
+                        )
+                    ) {
+
+                        PrimaryButton(
+                            title: "Schedule Inspection",
+                            icon: "calendar.badge.plus"
+                        )
                     }
 
-                } else {
-
-                    Text(
-                        "No inspection notes saved for this property yet."
+                    SectionTitle(
+                        title: "Latest Inspection Notes"
                     )
-                }
 
-                Spacer()
+                    if let inspection =
+                        viewModel.latestPropertyInspection {
+
+                        HStack {
+
+                            Image(
+                                systemName: "clock"
+                            )
+                            .foregroundColor(
+                                RentalHubTheme.accent
+                            )
+
+                            Text(
+                                inspection.startTime,
+                                style: .date
+                            )
+
+                            Text("-")
+
+                            Text(
+                                inspection.startTime,
+                                style: .time
+                            )
+                        }
+                        .foregroundColor(
+                            RentalHubTheme.secondaryText
+                        )
+
+                        ForEach(
+                            viewModel.latestPropertyObservations
+                        ) { observation in
+
+                            ObservationCard(
+                                observation: observation
+                            )
+                        }
+
+                    } else {
+
+                        VStack(spacing: 10) {
+
+                            Image(
+                                systemName:
+                                    "checklist"
+                            )
+                            .font(.title)
+                            .foregroundColor(
+                                RentalHubTheme.secondaryText
+                            )
+
+                            Text(
+                                "No inspection notes saved yet."
+                            )
+                            .foregroundColor(
+                                RentalHubTheme.secondaryText
+                            )
+                        }
+                        .frame(
+                            maxWidth: .infinity
+                        )
+                        .padding(25)
+                        .background(
+                            RentalHubTheme.card
+                        )
+                        .cornerRadius(15)
+                    }
+
+                    Spacer()
+                }
+                .padding()
             }
-            .padding()
         }
         .navigationTitle("Property Details")
+        .navigationBarTitleDisplayMode(
+            .inline
+        )
         .onAppear {
 
             viewModel.loadLatestInspectionNotes(
                 for: property.id
             )
         }
-    }
-
-    private func criterionName(
-        _ criterion: InspectionCriterion
-    ) -> String {
-
-        switch criterion {
-
-        case .noise:
-            return "Noise"
-
-        case .daylight:
-            return "Daylight"
-
-        case .storage:
-            return "Storage"
-
-        case .roomSpace:
-            return "Room Space"
-
-        case .transport:
-            return "Transport"
-        }
-    }
-
-    private func statusName(
-        _ status: ObservationStatus
-    ) -> String {
-
-        switch status {
-
-        case .notChecked:
-            return "Not Checked"
-
-        case .meetsNeeds:
-            return "Meets Needs"
-
-        case .doesNotMeetNeeds:
-            return "Does Not Meet Needs"
-
-        case .needsClarification:
-            return "Needs Clarification"
-        }
+        .preferredColorScheme(.dark)
     }
 }

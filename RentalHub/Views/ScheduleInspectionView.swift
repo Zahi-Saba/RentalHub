@@ -20,52 +20,151 @@ struct ScheduleInspectionView: View {
 
     var body: some View {
 
-        VStack(spacing: 20) {
+        ZStack {
 
-            Text(property.address)
-                .font(.headline)
+            RentalHubTheme.background
+                .ignoresSafeArea()
 
-            DatePicker(
-                "Start Time",
-                selection: $startTime
-            )
+            VStack(
+                alignment: .leading,
+                spacing: 22
+            ) {
 
-            DatePicker(
-                "End Time",
-                selection: $endTime
-            )
-
-            if !viewModel.errorMessage.isEmpty {
-                Text(viewModel.errorMessage)
-                    .foregroundColor(.red)
-            }
-
-            Button("Schedule Inspection") {
-
-                viewModel.scheduleInspection(
-                    rentalPropertyID: property.id,
-                    startTime: startTime,
-                    endTime: endTime
+                SectionTitle(
+                    title: "Schedule Inspection"
                 )
 
-                if viewModel.errorMessage.isEmpty {
+                HStack(spacing: 12) {
 
-                    showConfirmation = true
+                    Image(
+                        systemName: "house.fill"
+                    )
+                    .foregroundColor(
+                        RentalHubTheme.accent
+                    )
+
+                    Text(property.address)
+                        .font(.headline)
+                        .foregroundColor(
+                            RentalHubTheme.mainText
+                        )
                 }
+                .padding()
+                .frame(
+                    maxWidth: .infinity,
+                    alignment: .leading
+                )
+                .background(
+                    RentalHubTheme.card
+                )
+                .cornerRadius(15)
+
+                VStack(
+                    alignment: .leading,
+                    spacing: 10
+                ) {
+
+                    Text("Start Time")
+                        .font(.headline)
+                        .foregroundColor(
+                            RentalHubTheme.mainText
+                        )
+
+                    DatePicker(
+                        "Start",
+                        selection: $startTime
+                    )
+                    .labelsHidden()
+                    .colorScheme(.dark)
+                }
+                .padding()
+                .frame(
+                    maxWidth: .infinity,
+                    alignment: .leading
+                )
+                .background(
+                    RentalHubTheme.card
+                )
+                .cornerRadius(15)
+
+                VStack(
+                    alignment: .leading,
+                    spacing: 10
+                ) {
+
+                    Text("End Time")
+                        .font(.headline)
+                        .foregroundColor(
+                            RentalHubTheme.mainText
+                        )
+
+                    DatePicker(
+                        "End",
+                        selection: $endTime
+                    )
+                    .labelsHidden()
+                    .colorScheme(.dark)
+                }
+                .padding()
+                .frame(
+                    maxWidth: .infinity,
+                    alignment: .leading
+                )
+                .background(
+                    RentalHubTheme.card
+                )
+                .cornerRadius(15)
+
+                if !viewModel.errorMessage.isEmpty {
+
+                    Text(
+                        viewModel.errorMessage
+                    )
+                    .foregroundColor(.red)
+                }
+
+                Button {
+
+                    viewModel.scheduleInspection(
+                        rentalPropertyID: property.id,
+                        startTime: startTime,
+                        endTime: endTime
+                    )
+
+                    if viewModel
+                        .errorMessage
+                        .isEmpty {
+
+                        showConfirmation = true
+                    }
+
+                } label: {
+
+                    PrimaryButton(
+                        title: "Schedule Inspection",
+                        icon: "calendar.badge.plus"
+                    )
+                }
+
+                Spacer()
             }
-
-            Spacer()
+            .padding()
         }
-        .padding()
-        .navigationTitle("Schedule Inspection")
-
+        .navigationTitle("New Inspection")
+        .navigationBarTitleDisplayMode(
+            .inline
+        )
+        .preferredColorScheme(.dark)
         .alert(
             "Inspection Scheduled",
             isPresented: $showConfirmation
         ) {
+
             Button("OK") {
             }
+
         } message: {
+
             Text(
                 "The inspection was scheduled successfully."
             )

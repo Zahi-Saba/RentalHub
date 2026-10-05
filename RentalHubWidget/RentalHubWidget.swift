@@ -40,9 +40,7 @@ struct RentalHubWidgetProvider: TimelineProvider {
 
     func getTimeline(
         in context: Context,
-        completion: @escaping (
-            Timeline<RentalHubWidgetEntry>
-        ) -> Void
+        completion: @escaping (Timeline<RentalHubWidgetEntry>) -> Void
     ) {
 
         let entry = createEntry()
@@ -69,87 +67,186 @@ struct RentalHubWidgetView: View {
 
     var entry: RentalHubWidgetEntry
 
-    @Environment(\.widgetFamily) private var family
+    @Environment(\.widgetFamily)
+    private var family
 
     var body: some View {
 
         if family == .systemSmall {
 
-            VStack(alignment: .leading, spacing: 8) {
-
-                Text("Next Inspection")
-                    .font(.headline)
-
-                Text(entry.address)
-                    .font(.subheadline)
-                    .bold()
-
-                if let startTime = entry.startTime {
-
-                    Text(
-                        startTime,
-                        style: .date
-                    )
-
-                    Text(
-                        startTime,
-                        style: .time
-                    )
-
-                } else {
-
-                    Text("No inspection scheduled.")
-                }
-
-                Spacer()
-            }
+            smallWidget
 
         } else if family == .systemMedium {
 
-            VStack(alignment: .leading, spacing: 10) {
-
-                Text("Next Rental Inspection")
-                    .font(.headline)
-
-                Text(entry.address)
-                    .font(.title3)
-                    .bold()
-
-                if let startTime = entry.startTime {
-
-                    HStack {
-
-                        Text(
-                            startTime,
-                            style: .date
-                        )
-
-                        Text("-")
-
-                        Text(
-                            startTime,
-                            style: .time
-                        )
-                    }
-
-                } else {
-
-                    Text("No upcoming inspection scheduled.")
-                }
-
-                Spacer()
-            }
+            mediumWidget
 
         } else {
 
             Text("Widget size not supported.")
         }
     }
+
+    var smallWidget: some View {
+
+        VStack(
+            alignment: .leading,
+            spacing: 10
+        ) {
+
+            HStack {
+
+                Image(
+                    systemName: "house.fill"
+                )
+                .foregroundColor(
+                    RentalHubTheme.accent
+                )
+
+                Text("RentalHub")
+                    .font(.headline)
+                    .foregroundColor(
+                        RentalHubTheme.mainText
+                    )
+            }
+
+            Spacer()
+
+            Text("Next Inspection")
+                .font(.caption)
+                .foregroundColor(
+                    RentalHubTheme.secondaryText
+                )
+
+            Text(entry.address)
+                .font(.headline)
+                .foregroundColor(
+                    RentalHubTheme.mainText
+                )
+                .lineLimit(2)
+
+            if let startTime = entry.startTime {
+
+                HStack {
+
+                    Image(
+                        systemName: "clock"
+                    )
+
+                    Text(
+                        startTime,
+                        style: .time
+                    )
+                }
+                .font(.caption)
+                .foregroundColor(
+                    RentalHubTheme.secondaryText
+                )
+
+            } else {
+
+                Text(
+                    "No inspection scheduled."
+                )
+                .font(.caption)
+                .foregroundColor(
+                    RentalHubTheme.secondaryText
+                )
+            }
+        }
+    }
+
+    var mediumWidget: some View {
+
+        HStack(spacing: 18) {
+
+            ZStack {
+
+                RoundedRectangle(
+                    cornerRadius: 15
+                )
+                .fill(
+                    RentalHubTheme.secondaryCard
+                )
+                .frame(
+                    width: 65,
+                    height: 65
+                )
+
+                Image(
+                    systemName: "house.fill"
+                )
+                .font(.title)
+                .foregroundColor(
+                    RentalHubTheme.accent
+                )
+            }
+
+            VStack(
+                alignment: .leading,
+                spacing: 7
+            ) {
+
+                Text("Next Rental Inspection")
+                    .font(.headline)
+                    .foregroundColor(
+                        RentalHubTheme.mainText
+                    )
+
+                Text(entry.address)
+                    .font(.title3)
+                    .bold()
+                    .foregroundColor(
+                        RentalHubTheme.mainText
+                    )
+                    .lineLimit(1)
+
+                if let startTime = entry.startTime {
+
+                    HStack {
+
+                        Image(
+                            systemName: "calendar"
+                        )
+
+                        Text(
+                            startTime,
+                            style: .date
+                        )
+
+                        Image(
+                            systemName: "clock"
+                        )
+
+                        Text(
+                            startTime,
+                            style: .time
+                        )
+                    }
+                    .font(.caption)
+                    .foregroundColor(
+                        RentalHubTheme.secondaryText
+                    )
+
+                } else {
+
+                    Text(
+                        "No upcoming inspection scheduled."
+                    )
+                    .foregroundColor(
+                        RentalHubTheme.secondaryText
+                    )
+                }
+            }
+
+            Spacer()
+        }
+    }
 }
 
 struct RentalHubWidget: Widget {
 
-    let kind: String = SharedWidgetData.widgetKind
+    let kind: String =
+        SharedWidgetData.widgetKind
 
     var body: some WidgetConfiguration {
 
@@ -162,7 +259,7 @@ struct RentalHubWidget: Widget {
                 entry: entry
             )
             .containerBackground(
-                Color.white,
+                RentalHubTheme.background,
                 for: .widget
             )
         }

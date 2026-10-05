@@ -13,66 +13,91 @@ struct InspectionHistoryView: View {
 
     var body: some View {
 
-        VStack {
+        ZStack {
 
-            if viewModel.inspectionHistory.isEmpty {
+            RentalHubTheme.background
+                .ignoresSafeArea()
 
-                Text("No past inspections.")
+            ScrollView {
 
-            } else {
+                VStack(
+                    alignment: .leading,
+                    spacing: 20
+                ) {
 
-                List(
-                    viewModel.inspectionHistory
-                ) { inspection in
+                    SectionTitle(
+                        title: "Past Inspections"
+                    )
 
-                    NavigationLink(
-                        destination: InspectionChecklistView(
-                            viewModel: viewModel,
-                            inspection: inspection
+                    if viewModel.inspectionHistory.isEmpty {
+
+                        VStack(spacing: 12) {
+
+                            Image(
+                                systemName: "clock"
+                            )
+                            .font(.system(size: 40))
+                            .foregroundColor(
+                                RentalHubTheme.secondaryText
+                            )
+
+                            Text(
+                                "No past inspections."
+                            )
+                            .foregroundColor(
+                                RentalHubTheme.secondaryText
+                            )
+                        }
+                        .frame(
+                            maxWidth: .infinity
                         )
-                    ) {
+                        .padding(30)
+                        .background(
+                            RentalHubTheme.card
+                        )
+                        .cornerRadius(15)
 
-                        VStack(
-                            alignment: .leading,
-                            spacing: 6
-                        ) {
+                    } else {
 
-                            Text(
-                                viewModel.propertyAddress(
-                                    for: inspection.rentalPropertyID
-                                )
-                            )
-                            .font(.headline)
+                        ForEach(
+                            viewModel.inspectionHistory
+                        ) { inspection in
 
-                            Text(
-                                inspection.startTime,
-                                style: .date
-                            )
+                            NavigationLink(
+                                destination:
+                                    InspectionChecklistView(
+                                        viewModel: viewModel,
+                                        inspection: inspection
+                                    )
+                            ) {
 
-                            HStack {
-
-                                Text(
-                                    inspection.startTime,
-                                    style: .time
-                                )
-
-                                Text("-")
-
-                                Text(
-                                    inspection.endTime,
-                                    style: .time
+                                InspectionCard(
+                                    inspection: inspection,
+                                    address:
+                                        viewModel.propertyAddress(
+                                            for:
+                                                inspection
+                                                    .rentalPropertyID
+                                        )
                                 )
                             }
                         }
                     }
+
+                    Spacer()
                 }
+                .padding()
             }
         }
         .navigationTitle("Inspection History")
+        .navigationBarTitleDisplayMode(
+            .inline
+        )
         .onAppear {
 
             viewModel.loadRentalProperties()
             viewModel.loadInspectionHistory()
         }
+        .preferredColorScheme(.dark)
     }
 }

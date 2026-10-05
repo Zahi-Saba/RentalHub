@@ -15,79 +15,168 @@ struct RentalPropertyListView: View {
 
         NavigationView {
 
-            VStack {
+            ZStack {
 
-                NavigationLink(
-                    destination: AddRentalPropertyView(
-                        viewModel: viewModel
+                RentalHubTheme.background
+                    .ignoresSafeArea()
+
+                VStack(spacing: 20) {
+
+                    VStack(
+                        alignment: .leading,
+                        spacing: 5
+                    ) {
+
+                        Text("RentalHub")
+                            .font(.largeTitle)
+                            .bold()
+                            .foregroundColor(
+                                RentalHubTheme.mainText
+                            )
+
+                        Text("Find. Inspect. Decide.")
+                            .foregroundColor(
+                                RentalHubTheme.secondaryText
+                            )
+                    }
+                    .frame(
+                        maxWidth: .infinity,
+                        alignment: .leading
                     )
-                ) {
-                    Text("Add Rental Property")
-                }
-                .padding()
+                    .padding(.horizontal)
 
-                NavigationLink(
-                    destination: SharedPropertyPreviewView()
-                ) {
-                    Text("View Shared Properties")
-                }
-                .padding()
+                    NavigationLink(
+                        destination: AddRentalPropertyView(
+                            viewModel: viewModel
+                        )
+                    ) {
 
-                if viewModel.rentalProperties.isEmpty {
+                        PrimaryButton(
+                            title: "Add Rental Property",
+                            icon: "plus.circle.fill"
+                        )
+                    }
+                    .padding(.horizontal)
 
-                    Text("No rental properties saved yet.")
+                    HStack(spacing: 12) {
 
-                } else {
-                    
-                    List {
-                        ForEach(
-                            viewModel.rentalProperties) {property in
+                        NavigationLink(
+                            destination:
+                                SharedPropertyPreviewView()
+                        ) {
 
-                            NavigationLink(
-                                destination: RentalPropertyDetailView(
-                                    viewModel: viewModel,
-                                    property: property
+                            DashboardButton(
+                                title: "Shared",
+                                icon: "square.and.arrow.down"
+                            )
+                        }
+
+                        NavigationLink(
+                            destination:
+                                InspectionPlannerView(
+                                    viewModel: viewModel
                                 )
-                            ) {
+                        ) {
 
-                                VStack(
-                                    alignment: .leading
+                            DashboardButton(
+                                title: "Inspections",
+                                icon: "calendar"
+                            )
+                        }
+                    }
+                    .padding(.horizontal)
+
+                    SectionTitle(
+                        title: "Your Shortlist"
+                    )
+                    .padding(.horizontal)
+
+                    if viewModel.rentalProperties.isEmpty {
+
+                        VStack(spacing: 12) {
+
+                            Image(
+                                systemName: "house"
+                            )
+                            .font(
+                                .system(size: 40)
+                            )
+                            .foregroundColor(
+                                RentalHubTheme.secondaryText
+                            )
+
+                            Text(
+                                "No rental properties saved yet."
+                            )
+                            .foregroundColor(
+                                RentalHubTheme.secondaryText
+                            )
+                        }
+                        .frame(
+                            maxWidth: .infinity
+                        )
+                        .padding(30)
+                        .background(
+                            RentalHubTheme.card
+                        )
+                        .cornerRadius(15)
+                        .padding(.horizontal)
+
+                        Spacer()
+
+                    } else {
+
+                        List {
+
+                            ForEach(
+                                viewModel.rentalProperties
+                            ) { property in
+
+                                NavigationLink(
+                                    destination:
+                                        RentalPropertyDetailView(
+                                            viewModel: viewModel,
+                                            property: property
+                                        )
                                 ) {
 
-                                    Text(property.address)
+                                    RentalPropertyCard(
+                                        property: property
+                                    )
+                                }
+                                .listRowBackground(
+                                    RentalHubTheme.card
+                                )
+                            }
+                            .onDelete { indexSet in
 
-                                    Text("Weekly rent: $\(property.weeklyRent, specifier: "%.0f")")
+                                for index in indexSet {
+
+                                    let property =
+                                        viewModel
+                                            .rentalProperties[index]
+
+                                    viewModel
+                                        .deleteRentalProperty(
+                                            property
+                                        )
                                 }
                             }
                         }
-                        .onDelete { indexSet in
-
-                            for index in indexSet {
-
-                                let property =
-                                    viewModel.rentalProperties[index]
-
-                                viewModel.deleteRentalProperty(
-                                    property
-                                )
-                            }
-                        }
+                        .listStyle(.plain)
+                        .scrollContentBackground(
+                            .hidden
+                        )
                     }
                 }
-
-                NavigationLink(
-                    destination: InspectionPlannerView(
-                        viewModel: viewModel
-                    )
-                ) {
-                    Text("View Inspection Planner")
-                }
-                .padding()
+                .padding(.top)
             }
-            .navigationTitle("Rental Shortlist")
+            .navigationBarHidden(true)
             .onAppear {
+
                 viewModel.loadRentalProperties()
             }
         }
+        .preferredColorScheme(.dark)
     }
 }

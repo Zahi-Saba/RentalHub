@@ -6,3 +6,32 @@
 //
 
 import Foundation
+import SwiftUI
+
+struct PrimaryButton: View {
+
+    let title: String
+    let icon: String
+
+    var body: some View {
+
+        HStack {
+
+            Image(systemName: icon)
+                .font(.title2)
+
+            Text(title)
+                .font(.headline)
+
+            Spacer()
+        }
+        .foregroundColor(
+            RentalHubTheme.mainText
+        )
+        .padding()
+        .background(
+            RentalHubTheme.accent
+        )
+        .cornerRadius(15)
+    }
+}

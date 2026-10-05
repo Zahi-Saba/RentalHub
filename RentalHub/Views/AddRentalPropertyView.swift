@@ -18,68 +18,128 @@ struct AddRentalPropertyView: View {
 
     var body: some View {
 
-        VStack(spacing: 20) {
+        ZStack {
 
-            TextField(
-                "Property address",
-                text: $address
-            )
-            .textFieldStyle(.roundedBorder)
+            RentalHubTheme.background
+                .ignoresSafeArea()
 
-            TextField(
-                "Weekly rent",
-                text: $weeklyRent
-            )
-            .textFieldStyle(.roundedBorder)
-            .keyboardType(.decimalPad)
+            VStack(
+                alignment: .leading,
+                spacing: 22
+            ) {
 
-            if !inputError.isEmpty {
-                Text(inputError)
-                    .foregroundColor(.red)
-            }
+                SectionTitle(
+                    title: "New Rental Property"
+                )
 
-            if !viewModel.errorMessage.isEmpty {
-                Text(viewModel.errorMessage)
-                    .foregroundColor(.red)
-            }
+                Text(
+                    "Add a property to your rental shortlist."
+                )
+                .foregroundColor(
+                    RentalHubTheme.secondaryText
+                )
 
-            Button("Save Rental Property") {
+                DarkTextField(
+                    title: "Property Address",
+                    placeholder: "Enter property address",
+                    text: $address
+                )
 
-                if let rent = Double(weeklyRent) {
-
-                    viewModel.addRentalProperty(
-                        address: address,
-                        weeklyRent: rent
-                        
-                    )
-
-                    if viewModel.errorMessage.isEmpty {
-                        address = ""
-                        weeklyRent = ""
-                        inputError = ""
-                        showConfirmation = true
-                    }
-
-                } else {
-
-                    inputError = "Please enter a valid weekly rent."
-                }
-            }
-
-            Spacer()
-        }
-        .padding()
-        .navigationTitle("Add Rental Property")
-        .alert(
-                    "Rental Property Added",
-                    isPresented: $showConfirmation
+                VStack(
+                    alignment: .leading,
+                    spacing: 8
                 ) {
-                    Button("OK") {
+
+                    Text("Weekly Rent")
+                        .font(.headline)
+                        .foregroundColor(
+                            RentalHubTheme.mainText
+                        )
+
+                    TextField(
+                        "Enter weekly rent",
+                        text: $weeklyRent
+                    )
+                    .keyboardType(.decimalPad)
+                    .padding()
+                    .foregroundColor(
+                        RentalHubTheme.mainText
+                    )
+                    .background(
+                        RentalHubTheme.card
+                    )
+                    .cornerRadius(12)
+                }
+
+                if !inputError.isEmpty {
+
+                    Text(inputError)
+                        .foregroundColor(.red)
+                }
+
+                if !viewModel.errorMessage.isEmpty {
+
+                    Text(viewModel.errorMessage)
+                        .foregroundColor(.red)
+                }
+
+                Button {
+
+                    inputError = ""
+
+                    if let rent = Double(
+                        weeklyRent
+                    ) {
+
+                        viewModel.addRentalProperty(
+                            address: address,
+                            weeklyRent: rent
+                        )
+
+                        if viewModel
+                            .errorMessage
+                            .isEmpty {
+
+                            address = ""
+                            weeklyRent = ""
+
+                            showConfirmation = true
+                        }
+
+                    } else {
+
+                        inputError =
+                            "Please enter a valid weekly rent."
                     }
-                } message: {
-                    Text(
-                        "The rental property was saved successfully."
+
+                } label: {
+
+                    PrimaryButton(
+                        title: "Add Rental Property",
+                        icon: "plus.circle.fill"
                     )
                 }
+
+                Spacer()
             }
+            .padding()
         }
+        .navigationTitle("Add Property")
+        .navigationBarTitleDisplayMode(
+            .inline
+        )
+        .preferredColorScheme(.dark)
+        .alert(
+            "Rental Property Added",
+            isPresented: $showConfirmation
+        ) {
+            Button("OK") {
+            }
+        } message: {
+
+            Text(
+                "The rental property was saved successfully."
+            )
+        }
+    }
+}

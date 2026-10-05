@@ -14,43 +14,90 @@ struct SharedPropertyPreviewView: View {
 
     var body: some View {
 
-        ScrollView {
+        ZStack {
 
-            VStack(spacing: 20) {
+            RentalHubTheme.background
+                .ignoresSafeArea()
 
-                if sharedLinks.isEmpty {
+            ScrollView {
 
-                    Text(
-                        "No rental properties have been shared yet."
+                VStack(
+                    alignment: .leading,
+                    spacing: 20
+                ) {
+
+                    SectionTitle(
+                        title: "Shared Properties"
                     )
 
-                } else {
+                    Text(
+                        "Rental listings shared from Safari appear here."
+                    )
+                    .foregroundColor(
+                        RentalHubTheme.secondaryText
+                    )
 
-                    ForEach(
-                        sharedLinks,
-                        id: \.self
-                    ) { link in
+                    if sharedLinks.isEmpty {
 
-                        SharedPropertyCard(
-                            link: link,
-                            onRemove: {
+                        VStack(spacing: 12) {
 
-                                removeSharedLink(
-                                    link
-                                )
-                            }
+                            Image(
+                                systemName:
+                                    "square.and.arrow.down"
+                            )
+                            .font(.system(size: 40))
+                            .foregroundColor(
+                                RentalHubTheme.secondaryText
+                            )
+
+                            Text(
+                                "No rental properties have been shared yet."
+                            )
+                            .foregroundColor(
+                                RentalHubTheme.secondaryText
+                            )
+                        }
+                        .frame(
+                            maxWidth: .infinity
                         )
+                        .padding(30)
+                        .background(
+                            RentalHubTheme.card
+                        )
+                        .cornerRadius(15)
+
+                    } else {
+
+                        ForEach(
+                            sharedLinks,
+                            id: \.self
+                        ) { link in
+
+                            SharedPropertyCard(
+                                link: link,
+                                onRemove: {
+
+                                    removeSharedLink(
+                                        link
+                                    )
+                                }
+                            )
+                        }
                     }
+
+                    Spacer()
                 }
+                .padding()
             }
-            .padding()
         }
         .navigationTitle("Shared Properties")
+        .navigationBarTitleDisplayMode(.inline)
         .onAppear {
 
             sharedLinks =
                 SharedRentalLinkData.loadLinks()
         }
+        .preferredColorScheme(.dark)
     }
 
     private func removeSharedLink(
@@ -77,7 +124,7 @@ struct SharedPropertyCard: View {
 
         VStack(
             alignment: .leading,
-            spacing: 8
+            spacing: 12
         ) {
 
             if let metadata = metadata {
@@ -95,18 +142,37 @@ struct SharedPropertyCard: View {
                 ProgressView(
                     "Loading property..."
                 )
+                .foregroundColor(
+                    RentalHubTheme.mainText
+                )
+                .frame(
+                    maxWidth: .infinity
+                )
+                .padding(40)
             }
 
-            Button("Remove") {
+            Button {
 
                 onRemove()
-            }
-            .foregroundColor(.red)
-        }
-        .onAppear {
 
-            loadPreview()
+            } label: {
+
+                HStack {
+
+                    Image(
+                        systemName: "trash"
+                    )
+
+                    Text("Remove Property")
+                }
+                .foregroundColor(.red)
+            }
         }
+        .padding()
+        .background(
+            RentalHubTheme.card
+        )
+        .cornerRadius(15)
     }
 
     private func loadPreview() {

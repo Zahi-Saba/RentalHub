@@ -75,6 +75,7 @@
 			membershipExceptions = (
 				Shared/SharedRentalLinkData.swift,
 				Shared/SharedWidgetData.swift,
+				UI/RentalHubTheme.swift,
 			);
 			target = 606FCDAB30711E0200C16A97 /* RentalHubWidgetExtension */;
 		};
@@ -89,7 +90,6 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Shared/SharedRentalLinkData.swift,
-				Views/SharedPropertyPreviewView.swift,
 			);
 			target = 606FCE883071390000C16A97 /* RentalHubShare */;
 		};
@@ -106,6 +106,14 @@
 				Repositories/RentalPropertyRepository.swift,
 				Shared/SharedRentalLinkData.swift,
 				Shared/SharedWidgetData.swift,
+				UI/Components/DarkTextField.swift,
+				UI/Components/DashboardButton.swift,
+				UI/Components/InspectionCard.swift,
+				UI/Components/ObservationCard.swift,
+				UI/Components/PrimaryButton.swift,
+				UI/Components/RentalPropertyCard.swift,
+				UI/Components/SectionTitle.swift,
+				UI/RentalHubTheme.swift,
 				UseCases/DeleteRentalPropertyUseCase.swift,
 				UseCases/RecordInspectionObservationUseCase.swift,
 				UseCases/SaveRentalPropertyUseCase.swift,

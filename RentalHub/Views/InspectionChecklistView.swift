@@ -20,120 +20,292 @@ struct InspectionChecklistView: View {
 
     var body: some View {
 
-        ScrollView {
+        ZStack {
 
-            VStack(spacing: 20) {
+            RentalHubTheme.background
+                .ignoresSafeArea()
 
-                Text(
-                    viewModel.propertyAddress(
-                        for: inspection.rentalPropertyID
-                    )
-                )
-                .font(.headline)
+            ScrollView {
 
-                Picker(
-                    "Inspection Criterion",
-                    selection: $criterion
+                VStack(
+                    alignment: .leading,
+                    spacing: 20
                 ) {
 
-                    ForEach(
-                        InspectionCriterion.allCases,
-                        id: \.self
-                    ) { criterion in
-
-                        Text(criterion.rawValue)
-                    }
-                }
-
-                Picker(
-                    "Status",
-                    selection: $status
-                ) {
-
-                    ForEach(
-                        ObservationStatus.allCases,
-                        id: \.self
-                    ) { status in
-
-                        Text(status.rawValue)
-                    }
-                }
-
-                TextField(
-                    "Inspection notes",
-                    text: $notes
-                )
-                .textFieldStyle(.roundedBorder)
-
-                if !viewModel.errorMessage.isEmpty {
-
-                    Text(viewModel.errorMessage)
-                        .foregroundColor(.red)
-                }
-
-                Button("Save Observation") {
-
-                    viewModel.recordObservation(
-                        inspectionID: inspection.id,
-                        criterion: criterion,
-                        status: status,
-                        notes: notes
+                    SectionTitle(
+                        title: "Inspection Checklist"
                     )
 
-                    if viewModel.errorMessage.isEmpty {
-                        notes = ""
+                    HStack {
+
+                        Image(
+                            systemName: "house.fill"
+                        )
+                        .foregroundColor(
+                            RentalHubTheme.accent
+                        )
+
+                        Text(
+                            viewModel.propertyAddress(
+                                for: inspection.rentalPropertyID
+                            )
+                        )
+                        .font(.headline)
+                        .foregroundColor(
+                            RentalHubTheme.mainText
+                        )
                     }
-                }
+                    .padding()
+                    .frame(
+                        maxWidth: .infinity,
+                        alignment: .leading
+                    )
+                    .background(
+                        RentalHubTheme.card
+                    )
+                    .cornerRadius(15)
 
-                Divider()
+                    VStack(
+                        alignment: .leading,
+                        spacing: 10
+                    ) {
 
-                Text("Saved Observations")
-                    .font(.headline)
+                        Text("Inspection Item")
+                            .font(.headline)
+                            .foregroundColor(
+                                RentalHubTheme.mainText
+                            )
 
-                if viewModel.observations.isEmpty {
-
-                    Text("No observations saved yet.")
-
-                } else {
-
-                    ForEach(viewModel.observations) { observation in
-
-                        VStack(
-                            alignment: .leading,
-                            spacing: 6
+                        Picker(
+                            "Inspection Item",
+                            selection: $criterion
                         ) {
 
-                            Text(observation.criterion.rawValue)
-                                .font(.headline)
+                            ForEach(
+                                InspectionCriterion.allCases,
+                                id: \.self
+                            ) { criterion in
 
-                            Text(
-                                "Status: \(observation.status.rawValue)"
-                            )
-
-                            Text(
-                                "Notes: \(observation.notes)"
-                            )
+                                Text(
+                                    criterionName(
+                                        criterion
+                                    )
+                                )
+                                .tag(criterion)
+                            }
                         }
-                        .frame(
-                            maxWidth: .infinity,
-                            alignment: .leading
+                        .pickerStyle(.menu)
+                        .tint(
+                            RentalHubTheme.accent
+                        )
+                    }
+                    .padding()
+                    .frame(
+                        maxWidth: .infinity,
+                        alignment: .leading
+                    )
+                    .background(
+                        RentalHubTheme.card
+                    )
+                    .cornerRadius(15)
+
+                    VStack(
+                        alignment: .leading,
+                        spacing: 10
+                    ) {
+
+                        Text("Result")
+                            .font(.headline)
+                            .foregroundColor(
+                                RentalHubTheme.mainText
+                            )
+
+                        Picker(
+                            "Result",
+                            selection: $status
+                        ) {
+
+                            ForEach(
+                                ObservationStatus.allCases,
+                                id: \.self
+                            ) { status in
+
+                                Text(
+                                    statusName(
+                                        status
+                                    )
+                                )
+                                .tag(status)
+                            }
+                        }
+                        .pickerStyle(.menu)
+                        .tint(
+                            RentalHubTheme.accent
+                        )
+                    }
+                    .padding()
+                    .frame(
+                        maxWidth: .infinity,
+                        alignment: .leading
+                    )
+                    .background(
+                        RentalHubTheme.card
+                    )
+                    .cornerRadius(15)
+
+                    VStack(
+                        alignment: .leading,
+                        spacing: 10
+                    ) {
+
+                        Text("Observation Notes")
+                            .font(.headline)
+                            .foregroundColor(
+                                RentalHubTheme.mainText
+                            )
+
+                        TextField(
+                            "What did you notice?",
+                            text: $notes
                         )
                         .padding()
-                        .background(
-                            Color.gray.opacity(0.1)
+                        .foregroundColor(
+                            RentalHubTheme.mainText
                         )
-                        .cornerRadius(8)
+                        .background(
+                            RentalHubTheme.secondaryCard
+                        )
+                        .cornerRadius(12)
                     }
+                    .padding()
+                    .background(
+                        RentalHubTheme.card
+                    )
+                    .cornerRadius(15)
+
+                    if !viewModel.errorMessage.isEmpty {
+
+                        Text(
+                            viewModel.errorMessage
+                        )
+                        .foregroundColor(.red)
+                    }
+
+                    Button {
+
+                        viewModel.recordObservation(
+                            inspectionID: inspection.id,
+                            criterion: criterion,
+                            status: status,
+                            notes: notes
+                        )
+
+                        if viewModel.errorMessage.isEmpty {
+
+                            notes = ""
+                        }
+
+                    } label: {
+
+                        PrimaryButton(
+                            title: "Save Observation",
+                            icon: "checkmark.circle.fill"
+                        )
+                    }
+
+                    Divider()
+
+                    SectionTitle(
+                        title: "Saved Observations"
+                    )
+
+                    if viewModel.observations.isEmpty {
+
+                        Text(
+                            "No observations saved yet."
+                        )
+                        .foregroundColor(
+                            RentalHubTheme.secondaryText
+                        )
+                        .frame(
+                            maxWidth: .infinity
+                        )
+                        .padding(25)
+                        .background(
+                            RentalHubTheme.card
+                        )
+                        .cornerRadius(15)
+
+                    } else {
+
+                        ForEach(
+                            viewModel.observations
+                        ) { observation in
+
+                            ObservationCard(
+                                observation: observation
+                            )
+                        }
+                    }
+
+                    Spacer()
                 }
+                .padding()
             }
-            .padding()
         }
-        .navigationTitle("Inspection Checklist")
+        .navigationTitle("Checklist")
+        .navigationBarTitleDisplayMode(.inline)
         .onAppear {
+
+            viewModel.loadRentalProperties()
 
             viewModel.loadObservations(
                 for: inspection.id
             )
+        }
+        .preferredColorScheme(.dark)
+    }
+
+    private func criterionName(
+        _ criterion: InspectionCriterion
+    ) -> String {
+
+        switch criterion {
+
+        case .noise:
+            return "Noise"
+
+        case .daylight:
+            return "Daylight"
+
+        case .storage:
+            return "Storage"
+
+        case .roomSpace:
+            return "Room Space"
+
+        case .transport:
+            return "Transport"
+        }
+    }
+
+    private func statusName(
+        _ status: ObservationStatus
+    ) -> String {
+
+        switch status {
+
+        case .notChecked:
+            return "Not Checked"
+
+        case .meetsNeeds:
+            return "Meets Needs"
+
+        case .doesNotMeetNeeds:
+            return "Does Not Meet Needs"
+
+        case .needsClarification:
+            return "Needs Clarification"
         }
     }
 }
