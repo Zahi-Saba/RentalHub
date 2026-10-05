@@ -173,6 +173,9 @@ struct SharedPropertyCard: View {
             RentalHubTheme.card
         )
         .cornerRadius(15)
+        .onAppear {
+            loadPreview()
+        }
     }
 
     private func loadPreview() {
