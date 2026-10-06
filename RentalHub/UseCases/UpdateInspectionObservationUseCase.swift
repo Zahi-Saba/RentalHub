@@ -12,7 +12,7 @@ enum UpdateInspectionObservationError: Error {
     case missingNotes
     case observationNotFound
 }
-
+//A saved inspection observation can update its status and notes while keeping its original inspection criterion.
 struct UpdateInspectionObservationUseCase {
 
     let repository: RentalPropertyRepository

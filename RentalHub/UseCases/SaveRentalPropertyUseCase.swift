@@ -11,7 +11,8 @@ enum SaveRentalPropertyError: Error {
     case missingAddress
     case invalidWeeklyRent
 }
-
+//A rental property must have an address.
+//Weekly rent must be greater than $0.
 struct SaveRentalPropertyUseCase {
 
     private let repository: RentalPropertyRepository

@@ -10,7 +10,7 @@ import Foundation
 enum ScheduleInspectionError: Error {
     case invalidTime
 }
-
+//An inspection end time must be after its start time.
 struct ScheduleInspectionUseCase {
 
     private let repository: RentalPropertyRepository
