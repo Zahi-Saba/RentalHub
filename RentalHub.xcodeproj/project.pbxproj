@@ -98,9 +98,9 @@
 			membershipExceptions = (
 				Models/InspectionObservation.swift,
 				Models/RentalInspection.swift,
-				Models/RentalProerty.swift,
-				Presistence/PersistenceController.swift,
-				Presistence/RentalHubModel.xcdatamodeld,
+				Models/RentalProperty.swift,
+				Persistence/PersistenceController.swift,
+				Persistence/RentalHubModel.xcdatamodeld,
 				RentalHubApp.swift,
 				Repositories/CoreDataRentalPropertyRepository.swift,
 				Repositories/RentalPropertyRepository.swift,
@@ -138,7 +138,7 @@
 			membershipExceptions = (
 				Models/InspectionObservation.swift,
 				Models/RentalInspection.swift,
-				Models/RentalProerty.swift,
+				Models/RentalProperty.swift,
 				RentalHubApp.swift,
 				Repositories/CoreDataRentalPropertyRepository.swift,
 				Repositories/RentalPropertyRepository.swift,
