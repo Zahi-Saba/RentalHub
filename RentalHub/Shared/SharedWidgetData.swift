@@ -7,76 +7,101 @@
 
 import Foundation
 
+struct SharedInspection {
+
+    let address: String
+    let startTime: Date
+    let endTime: Date
+}
+
 struct SharedWidgetData {
 
     static let appGroup = "group.com.ZahiOrg.RentalHub"
     static let widgetKind = "RentalHubWidget"
 
-    static func saveNextInspection(
-        address: String,
-        startTime: Date
+    static func saveInspections(
+        _ inspections: [SharedInspection]
     ) {
 
         let defaults = UserDefaults(
             suiteName: appGroup
         )
 
-        defaults?.set(
-            address,
-            forKey: "nextInspectionAddress"
-        )
+        var addresses: [String] = []
+        var startTimes: [Date] = []
+        var endTimes: [Date] = []
 
-        defaults?.set(
-            startTime,
-            forKey: "nextInspectionStartTime"
-        )
-    }
+        for inspection in inspections {
 
-    static func loadAddress() -> String {
+            addresses.append(
+                inspection.address
+            )
 
-        let defaults = UserDefaults(
-            suiteName: appGroup
-        )
+            startTimes.append(
+                inspection.startTime
+            )
 
-        if let address = defaults?.string(
-            forKey: "nextInspectionAddress"
-        ) {
-            return address
+            endTimes.append(
+                inspection.endTime
+            )
         }
 
-        return "No upcoming inspection"
+        defaults?.set(
+            addresses,
+            forKey: "widgetInspectionAddresses"
+        )
+
+        defaults?.set(
+            startTimes,
+            forKey: "widgetInspectionStartTimes"
+        )
+
+        defaults?.set(
+            endTimes,
+            forKey: "widgetInspectionEndTimes"
+        )
     }
 
-    static func loadStartTime() -> Date? {
+    static func loadInspections()
+        -> [SharedInspection] {
 
         let defaults = UserDefaults(
             suiteName: appGroup
         )
 
-        if let savedValue = defaults?.object(
-            forKey: "nextInspectionStartTime"
-        ) {
+        var inspections: [SharedInspection] = []
 
-            if let date = savedValue as? Date {
-                return date
+        if let addresses = defaults?.stringArray(
+            forKey: "widgetInspectionAddresses"
+        ),
+        let startTimes = defaults?.array(
+            forKey: "widgetInspectionStartTimes"
+        ) as? [Date],
+        let endTimes = defaults?.array(
+            forKey: "widgetInspectionEndTimes"
+        ) as? [Date] {
+
+            for index in 0..<addresses.count {
+
+                if index < startTimes.count &&
+                    index < endTimes.count {
+
+                    let inspection =
+                        SharedInspection(
+                            address: addresses[index],
+                            startTime: startTimes[index],
+                            endTime: endTimes[index]
+                        )
+
+                    inspections.append(
+                        inspection
+                    )
+                }
             }
         }
 
-        return nil
-    }
-
-    static func clearNextInspection() {
-
-        let defaults = UserDefaults(
-            suiteName: appGroup
-        )
-
-        defaults?.removeObject(
-            forKey: "nextInspectionAddress"
-        )
-
-        defaults?.removeObject(
-            forKey: "nextInspectionStartTime"
-        )
+        return inspections.sorted {
+            $0.startTime < $1.startTime
+        }
     }
 }

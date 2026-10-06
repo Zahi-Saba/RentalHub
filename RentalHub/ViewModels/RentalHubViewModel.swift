@@ -341,21 +341,26 @@ class RentalHubViewModel: ObservableObject {
 
     private func updateWidget() {
 
-        if let nextInspection = inspections.first {
+        var sharedInspections: [SharedInspection] = []
 
-            let address = propertyAddress(
-                for: nextInspection.rentalPropertyID
+        for inspection in inspections {
+
+            let sharedInspection = SharedInspection(
+                address: propertyAddress(
+                    for: inspection.rentalPropertyID
+                ),
+                startTime: inspection.startTime,
+                endTime: inspection.endTime
             )
 
-            SharedWidgetData.saveNextInspection(
-                address: address,
-                startTime: nextInspection.startTime
+            sharedInspections.append(
+                sharedInspection
             )
-
-        } else {
-
-            SharedWidgetData.clearNextInspection()
         }
+
+        SharedWidgetData.saveInspections(
+            sharedInspections
+        )
 
         WidgetCenter.shared.reloadTimelines(
             ofKind: SharedWidgetData.widgetKind

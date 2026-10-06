@@ -33,33 +33,85 @@ struct RentalHubWidgetProvider: TimelineProvider {
         completion: @escaping (RentalHubWidgetEntry) -> Void
     ) {
 
-        let entry = createEntry()
+        let now = Date()
 
-        completion(entry)
+        let inspections =
+            SharedWidgetData.loadInspections()
+
+        let nextInspection =
+            inspections.first {
+                $0.endTime > now
+            }
+
+        if let nextInspection = nextInspection {
+
+            let entry = RentalHubWidgetEntry(
+                date: now,
+                address: nextInspection.address,
+                startTime: nextInspection.startTime
+            )
+
+            completion(entry)
+
+        } else {
+
+            let entry = RentalHubWidgetEntry(
+                date: now,
+                address: "No upcoming inspection",
+                startTime: nil
+            )
+
+            completion(entry)
+        }
     }
 
     func getTimeline(
         in context: Context,
-        completion: @escaping (Timeline<RentalHubWidgetEntry>) -> Void
+        completion: @escaping (
+            Timeline<RentalHubWidgetEntry>
+        ) -> Void
     ) {
 
-        let entry = createEntry()
+        let inspections =
+            SharedWidgetData.loadInspections()
+
+        var entries: [RentalHubWidgetEntry] = []
+
+        var displayDate = Date()
+
+        while let nextInspection =
+                inspections.first(
+                    where: {
+                        $0.endTime > displayDate
+                    }
+                ) {
+
+            let entry = RentalHubWidgetEntry(
+                date: displayDate,
+                address: nextInspection.address,
+                startTime: nextInspection.startTime
+            )
+
+            entries.append(entry)
+
+            displayDate =
+                nextInspection.endTime
+        }
+
+        let emptyEntry = RentalHubWidgetEntry(
+            date: displayDate,
+            address: "No upcoming inspection",
+            startTime: nil
+        )
+
+        entries.append(emptyEntry)
 
         let timeline = Timeline(
-            entries: [entry],
+            entries: entries,
             policy: .never
         )
 
         completion(timeline)
-    }
-
-    private func createEntry() -> RentalHubWidgetEntry {
-
-        return RentalHubWidgetEntry(
-            date: Date(),
-            address: SharedWidgetData.loadAddress(),
-            startTime: SharedWidgetData.loadStartTime()
-        )
     }
 }
 
