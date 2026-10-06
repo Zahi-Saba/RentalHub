@@ -11,6 +11,7 @@ import CoreData
 enum CoreDataRentalPropertyRepositoryError: Error {
     case rentalPropertyNotFound
     case inspectionNotFound
+    case observationNotFound
 }
 
 class CoreDataRentalPropertyRepository: RentalPropertyRepository {
@@ -57,7 +58,38 @@ class CoreDataRentalPropertyRepository: RentalPropertyRepository {
 
         try context.save()
     }
+    func update(
+        _ observation: InspectionObservation
+    ) throws {
 
+        let request =
+            InspectionObservationEntity.fetchRequest()
+
+        request.predicate = NSPredicate(
+            format: "id == %@",
+            observation.id as CVarArg
+        )
+
+        let savedObservations =
+            try context.fetch(request)
+
+        if savedObservations.isEmpty {
+
+            throw CoreDataRentalPropertyRepositoryError
+                .observationNotFound
+        }
+
+        let observationEntity =
+            savedObservations[0]
+
+        observationEntity.status =
+            observation.status.rawValue
+
+        observationEntity.notes =
+            observation.notes
+
+        try context.save()
+    }
     func save(_ inspection: RentalInspection) throws {
 
         let request = RentalPropertyEntity.fetchRequest()

@@ -23,7 +23,11 @@ class RentalHubViewModel: ObservableObject {
     private let saveRentalPropertyUseCase: SaveRentalPropertyUseCase
     private let deleteRentalPropertyUseCase:DeleteRentalPropertyUseCase
     private let scheduleInspectionUseCase: ScheduleInspectionUseCase
+    
     private let recordInspectionObservationUseCase: RecordInspectionObservationUseCase
+    
+    private let updateInspectionObservationUseCase:
+        UpdateInspectionObservationUseCase
 
     init(repository: RentalPropertyRepository) {
 
@@ -44,7 +48,13 @@ class RentalHubViewModel: ObservableObject {
         deleteRentalPropertyUseCase =
             DeleteRentalPropertyUseCase(
                 repository: repository
-            )
+                    )
+        
+        self.updateInspectionObservationUseCase =
+                    UpdateInspectionObservationUseCase(
+                        repository: repository
+                    )
+        
     }
 
     func loadRentalProperties() {
@@ -338,6 +348,53 @@ class RentalHubViewModel: ObservableObject {
                 "The observation could not be saved. Please try again."
         }
     }
+    func updateObservation(
+            observation: InspectionObservation,
+            status: ObservationStatus,
+            notes: String
+        ) {
+
+            do {
+
+                let updatedObservation =
+                    try updateInspectionObservationUseCase
+                        .execute(
+                            observation: observation,
+                            status: status,
+                            notes: notes
+                        )
+
+                for index in observations.indices {
+
+                    if observations[index].id ==
+                        updatedObservation.id {
+
+                        observations[index] =
+                            updatedObservation
+                    }
+                }
+
+                errorMessage = ""
+
+            } catch UpdateInspectionObservationError
+                .missingNotes {
+
+                errorMessage =
+                    "Please add a note about what you observed."
+
+            } catch UpdateInspectionObservationError
+                .observationNotFound {
+
+                errorMessage =
+                    "This inspection observation could not be found."
+
+            } catch {
+
+                errorMessage =
+                    "The observation could not be updated. Please try again."
+            }
+        }
+
 
     private func updateWidget() {
 

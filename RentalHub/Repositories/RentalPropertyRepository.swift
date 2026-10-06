@@ -16,6 +16,8 @@ protocol RentalPropertyRepository {
     func save(_ observation: InspectionObservation) throws
     
     func delete(_ property: RentalProperty) throws
+    
+    func update(_ observation: InspectionObservation) throws
 
     func fetchRentalProperties() throws -> [RentalProperty]
 

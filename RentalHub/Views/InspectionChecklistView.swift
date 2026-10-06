@@ -242,9 +242,29 @@ struct InspectionChecklistView: View {
                             viewModel.observations
                         ) { observation in
 
-                            ObservationCard(
-                                observation: observation
-                            )
+                            NavigationLink(
+                                destination:
+                                    EditObservationView(
+                                        viewModel: viewModel,
+                                        observation: observation
+                                    )
+                            ) {
+
+                                HStack {
+
+                                    ObservationCard(
+                                        observation: observation
+                                    )
+
+                                    Image(
+                                        systemName: "pencil"
+                                    )
+                                    .foregroundColor(
+                                        RentalHubTheme.accent
+                                    )
+                                }
+                            }
+                            .buttonStyle(.plain)
                         }
                     }
 

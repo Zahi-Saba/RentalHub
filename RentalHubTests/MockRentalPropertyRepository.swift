@@ -31,6 +31,21 @@ class MockRentalPropertyRepository: RentalPropertyRepository {
             )
         }
     }
+    func update(
+        _ observation: InspectionObservation
+    ) throws {
+
+        if let index =
+            savedObservations.firstIndex(
+                where: {
+                    $0.id == observation.id
+                }
+            ) {
+
+            savedObservations[index] =
+                observation
+        }
+    }
     func save(_ observation: InspectionObservation) throws {
         savedObservations.append(observation)
     }
