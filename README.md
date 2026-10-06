@@ -131,5 +131,6 @@ Core Data remains responsible for the application's main rental property and ins
 
    `group.com.ZahiOrg.RentalHub`
 
-7. To test the Share Extension, open Safari in the Simulator, open a rental listing, select Share and choose RentalHub.
-8. To test the widget, add the RentalHub widget to the Simulator Home Screen after running the main application.
+7. To test the Share Extension, open Safari in the Simulator, open a rental listing, select safari page Share and choose RentalHub.
+
+8. To test the widget, first create a rental property and schedule a future inspection in RentalHub. Then add the RentalHub widget to the Simulator Home Screen. The widget will display the next scheduled inspection.
