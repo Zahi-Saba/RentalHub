@@ -197,6 +197,54 @@ struct RentalHubTests {
         #expect(observation.notes == "Plenty of wardrobe space")
         #expect(repository.savedObservations.count == 1)
     }
+    
+    @Test
+    func updatesSavedInspectionObservation() throws {
+
+        let repository =
+            MockRentalPropertyRepository()
+
+        let inspectionID = UUID()
+
+        let observation =
+            InspectionObservation(
+                inspectionID: inspectionID,
+                criterion: .storage,
+                status: .needsClarification,
+                notes: "Need to check storage"
+            )
+
+        repository.savedObservations.append(
+            observation
+        )
+
+        let useCase =
+            UpdateInspectionObservationUseCase(
+                repository: repository
+            )
+
+        let updatedObservation =
+            try useCase.execute(
+                observation: observation,
+                status: .meetsNeeds,
+                notes: "Large built-in wardrobe"
+            )
+
+        #expect(
+            updatedObservation.status ==
+                .meetsNeeds
+        )
+
+        #expect(
+            updatedObservation.notes ==
+                "Large built-in wardrobe"
+        )
+
+        #expect(
+            repository.savedObservations[0].notes ==
+                "Large built-in wardrobe"
+        )
+    }
 }
 
     

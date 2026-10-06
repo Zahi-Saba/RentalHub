@@ -50,6 +50,7 @@ Business operations are handled through dedicated Use Case structures including:
 - `ScheduleInspectionUseCase`
 - `RecordInspectionObservationUseCase`
 - `DeleteRentalPropertyUseCase`
+- `UpdateInspectionObservationUseCase`
 
 The Use Cases also validate business rules before information is stored.
 
@@ -60,6 +61,7 @@ Examples include:
 - An inspection must end after it starts.
 - An inspection observation must contain notes.
 - The same inspection criterion cannot be recorded twice for the same inspection.
+- A saved inspection observation can update its status and notes while keeping its original inspection criterion.
 
 ## Database Choice
 
